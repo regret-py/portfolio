@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regret — Créateur de mush.rip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Pixelify+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0604;
+    --bg2:#150a07;
+    --panel:#1a0d09;
+    --red:#e5342a;
+    --red2:#ff4b3e;
+    --red-deep:#7a1712;
+    --ink:#f6efed;
+    --muted:#ad928c;
+    --muted2:#7c6560;
+    --line:rgba(255,120,110,.13);
+    --glow:rgba(229,52,42,.55);
+    --ease:cubic-bezier(.16,1,.3,1);
+    --disp:"Poppins",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    --body:"Inter",system-ui,sans-serif;
+    --pix:"Pixelify Sans",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--red);color:#fff}
+  a{color:inherit}
+
+  #progress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--red),var(--red2));z-index:300;box-shadow:0 0 12px var(--glow)}
+
+  /* ---- fumée rouge réutilisable ---- */
+  .smoke{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+  .smoke i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.85}
+  .smoke .s1{width:60vw;height:60vw;top:-15%;left:-10%;background:radial-gradient(circle,rgba(200,32,24,.7),transparent 62%);animation:drift1 22s ease-in-out infinite}
+  .smoke .s2{width:55vw;height:55vw;bottom:-20%;right:-12%;background:radial-gradient(circle,rgba(120,18,15,.85),transparent 60%);animation:drift2 28s ease-in-out infinite}
+  .smoke .s3{width:40vw;height:40vw;top:25%;left:45%;background:radial-gradient(circle,rgba(255,70,55,.35),transparent 60%);animation:drift1 34s ease-in-out infinite reverse}
+  .smoke::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,transparent 40%,rgba(6,3,2,.75) 100%)}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5%,7%) scale(1.08)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6%,-4%) scale(1.12)}}
+
+  /* ---- nav ---- */
+  nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:200;
+    display:flex;align-items:center;gap:26px;padding:9px 12px 9px 18px;border-radius:100px;
+    background:rgba(20,10,8,.55);border:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    transition:background .4s var(--ease),box-shadow .4s var(--ease)}
+  nav.scrolled{background:rgba(20,10,8,.8);box-shadow:0 10px 40px rgba(0,0,0,.5)}
+  .logo{display:flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:700;font-size:16px;text-decoration:none}
+  .logo svg{width:22px;height:22px;filter:drop-shadow(0 0 8px var(--glow))}
+  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:500;transition:color .25s}
+  .nav-links a:hover{color:#fff}
+  @media(max-width:720px){.nav-links a:not(.cta){display:none}}
+  .cta{background:linear-gradient(180deg,var(--red2),var(--red));color:#fff !important;padding:8px 16px;border-radius:100px;font-size:13px;font-weight:600;box-shadow:0 4px 16px var(--glow);transition:transform .25s var(--ease)}
+  .cta:hover{transform:scale(1.05)}
+
+  /* ---- hero ---- */
+  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:130px 20px 70px;overflow:hidden}
+  .hero-inner{position:relative;z-index:3;max-width:920px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#ffb3ac;
+    background:rgba(229,52,42,.12);border:1px solid rgba(229,52,42,.3);padding:7px 16px;border-radius:100px;margin-bottom:30px}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--red2);box-shadow:0 0 8px var(--red2);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{font-family:var(--disp);font-size:clamp(48px,10.5vw,124px);font-weight:800;line-height:.94;letter-spacing:-.035em;margin-bottom:26px}
+  .hero h1 .red{color:var(--red2);text-shadow:0 0 50px var(--glow)}
+  .hero .lead{font-size:clamp(17px,2.3vw,23px);color:var(--muted);max-width:600px;margin:0 auto 40px;line-height:1.5}
+  .hero .lead b{color:#fff;font-weight:600}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;transition:transform .25s var(--ease),box-shadow .3s,background .3s}
+  .btn-red{background:linear-gradient(180deg,var(--red2),var(--red));color:#fff;box-shadow:0 8px 30px var(--glow)}
+  .btn-red:hover{transform:translateY(-3px);box-shadow:0 14px 44px var(--glow)}
+  .btn-ghost{background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--line)}
+  .btn-ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-3px)}
+  .handle{font-family:var(--pix);color:var(--muted);font-size:15px}
+  .handle b{color:var(--red2)}
+
+  .scroll-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:3;font-family:var(--pix);font-size:13px;letter-spacing:.15em;color:var(--muted2);display:flex;flex-direction:column;align-items:center;gap:8px}
+  .scroll-cue svg{width:16px;height:16px;animation:bob 1.8s var(--ease) infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+  .load{opacity:0;transform:translateY(26px);filter:blur(8px)}
+  .loaded .load{opacity:1;transform:none;filter:blur(0);transition:opacity 1s var(--ease),transform 1s var(--ease),filter 1s var(--ease)}
+  .loaded .d1{transition-delay:.05s}.loaded .d2{transition-delay:.18s}.loaded .d3{transition-delay:.32s}.loaded .d4{transition-delay:.46s}.loaded .d5{transition-delay:.62s}
+
+  /* ---- structure sections ---- */
+  section{position:relative}
+  .wrap{max-width:1180px;margin:0 auto;padding:clamp(80px,12vh,140px) clamp(20px,5vw,56px)}
+  .kicker{font-family:var(--pix);font-size:14px;letter-spacing:.08em;color:var(--red2);margin-bottom:14px;text-transform:uppercase}
+  .sec-title{font-family:var(--disp);font-size:clamp(30px,5vw,58px);font-weight:700;letter-spacing:-.03em;line-height:1.04}
+  .sec-sub{color:var(--muted);font-size:clamp(16px,2vw,19px);line-height:1.55;max-width:560px;margin-top:18px}
+  .center{text-align:center}
+  .center .sec-sub{margin-left:auto;margin-right:auto}
+
+  /* ---- cadre navigateur ---- */
+  .frame{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0a0504;box-shadow:0 50px 120px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.02)}
+  .frame-bar{height:40px;display:flex;align-items:center;gap:8px;padding:0 16px;background:rgba(20,10,8,.9);border-bottom:1px solid var(--line)}
+  .fd{width:11px;height:11px;border-radius:50%}
+  .fd.r{background:#ff5f57}.fd.y{background:#febc2e}.fd.g{background:#28c840}
+  .frame-url{margin-left:14px;font-size:12.5px;color:var(--muted);background:rgba(0,0,0,.4);padding:5px 16px;border-radius:7px;font-family:var(--pix)}
+  .frame-body{position:relative;overflow:hidden}
+
+  /* recréation landing dans le cadre */
+  .mini{position:relative;padding:0;min-height:440px;display:flex;flex-direction:column;background:#0a0504}
+  .mini .smoke i{filter:blur(50px)}
+  .mini-nav{position:relative;z-index:3;display:flex;align-items:center;gap:16px;justify-content:center;margin:20px auto;padding:8px 14px;border-radius:100px;background:rgba(20,10,8,.6);border:1px solid var(--line);width:max-content;max-width:92%}
+  .mini-nav .logo{font-size:13px}.mini-nav .logo svg{width:16px;height:16px}
+  .mini-nav span{font-size:11.5px;color:var(--muted)}
+  .mini-nav .mred{background:linear-gradient(180deg,var(--red2),var(--red));color:#fff;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:600}
+  .mini-hero{position:relative;z-index:3;text-align:center;padding:20px 20px 44px;margin-top:8px}
+  .mini-badge{font-family:var(--body);font-size:11px;color:#ffb3ac;background:rgba(229,52,42,.12);border:1px solid rgba(229,52,42,.28);padding:5px 12px;border-radius:100px;display:inline-block;margin-bottom:16px}
+  .mini-hero h3{font-family:var(--disp);font-weight:800;font-size:clamp(26px,4.4vw,50px);line-height:1;letter-spacing:-.03em}
+  .mini-hero h3 .red{color:var(--red2);text-shadow:0 0 30px var(--glow)}
+  .mini-hero p{color:var(--muted);font-size:13.5px;margin:14px auto 22px;max-width:400px}
+  .claim{display:flex;align-items:center;gap:6px;background:rgba(10,5,4,.7);border:1px solid var(--line);border-radius:100px;padding:6px 6px 6px 18px;max-width:380px;margin:0 auto}
+  .claim .pfx{color:var(--muted);font-family:var(--pix);font-size:14px}
+  .claim .typed{flex:1;text-align:left;font-family:var(--pix);font-size:14px;color:#fff;min-width:0;white-space:nowrap;overflow:hidden}
+  .claim .caret{display:inline-block;width:2px;height:15px;background:var(--red2);vertical-align:middle;margin-left:1px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .claim .cbtn{background:linear-gradient(180deg,var(--red2),var(--red));color:#fff;border:none;padding:9px 18px;border-radius:100px;font-size:13px;font-weight:600;font-family:var(--body);cursor:pointer;white-space:nowrap}
+
+  /* ---- dashboard preview ---- */
+  .dash{display:grid;grid-template-columns:180px 1fr;min-height:420px;background:#0a0504}
+  @media(max-width:600px){.dash{grid-template-columns:1fr}.dash-side{display:none}}
+  .dash-side{border-right:1px solid var(--line);padding:22px 14px}
+  .dash-side .logo{font-size:13px;margin-bottom:22px}.dash-side .logo svg{width:18px;height:18px}
+  .dash-side .item{font-size:13px;color:var(--muted);padding:10px 12px;border-radius:9px;margin-bottom:4px;cursor:default}
+  .dash-side .item.active{background:linear-gradient(90deg,rgba(229,52,42,.18),transparent);color:#fff;border:1px solid rgba(229,52,42,.25)}
+  .dash-main{padding:24px}
+  .dash-main h4{font-family:var(--disp);font-weight:600;font-size:17px;margin-bottom:18px}
+  .dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+  .dstat{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .dstat .lbl{font-size:11px;color:var(--muted);margin-bottom:6px}
+  .dstat .val{font-family:var(--disp);font-weight:700;font-size:22px;color:#fff}
+  .dstat .val .count{color:var(--red2)}
+  .chart-box{background:linear-gradient(180deg,rgba(229,52,42,.06),transparent);border:1px solid var(--line);border-radius:14px;padding:16px;height:190px}
+  .chart-box svg{width:100%;height:100%;overflow:visible}
+  .chart-line{fill:none;stroke:var(--red2);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px var(--glow));stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+  .in .chart-line{stroke-dashoffset:0;transition:stroke-dashoffset 2s var(--ease)}
+  .chart-area{fill:url(#ag);opacity:0}
+  .in .chart-area{opacity:1;transition:opacity 1.2s var(--ease) .6s}
+
+  /* ---- téléphones profils ---- */
+  .phones{display:flex;justify-content:center;align-items:center;gap:clamp(-30px,-2vw,10px);perspective:1600px;margin-top:60px;flex-wrap:wrap}
+  .phone{width:210px;flex:0 0 auto;border-radius:30px;padding:8px;background:linear-gradient(160deg,#241210,#0c0605);border:1px solid var(--line);box-shadow:0 40px 80px rgba(0,0,0,.6);position:relative;transition:transform .8s var(--ease),opacity .8s var(--ease);opacity:0}
+  .phones.in .phone{opacity:1}
+  .phone .screen{border-radius:24px;overflow:hidden;background:#0a0504;position:relative;height:420px}
+  .phone .scr-smoke{position:absolute;inset:0;opacity:.9}
+  .phone .scr-smoke i{position:absolute;border-radius:50%;filter:blur(34px)}
+  .phone .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:60px;height:16px;background:#000;border-radius:12px;z-index:5}
+  .phone .clock{position:absolute;top:12px;right:14px;font-family:var(--pix);font-size:10px;color:var(--red2);z-index:5;text-align:right;line-height:1.2}
+  .p-body{position:relative;z-index:4;padding:44px 16px 16px;display:flex;flex-direction:column;align-items:center;height:100%}
+  .p-ava{width:66px;height:66px;border-radius:16px;background:linear-gradient(150deg,var(--red),var(--red-deep));box-shadow:0 0 26px var(--glow);margin-bottom:12px;position:relative;overflow:hidden}
+  .p-ava::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 25%,rgba(255,200,80,.5),transparent 55%)}
+  .p-name{font-family:var(--pix);font-size:18px;color:#fff;font-weight:600}
+  .p-role{font-family:var(--pix);font-size:11px;color:var(--muted);margin-top:2px;text-align:center}
+  .p-badges{display:flex;gap:4px;margin:10px 0}
+  .p-badges span{width:16px;height:16px;border-radius:5px;background:rgba(229,52,42,.25);border:1px solid rgba(229,52,42,.4)}
+  .p-handle{position:absolute;bottom:-26px;left:0;right:0;text-align:center;font-family:var(--pix);font-size:12px;color:var(--muted)}
+  /* angles façon "See Real Profiles" */
+  .phone.left{transform:rotateY(24deg) translateZ(-40px) scale(.9)}
+  .phone.left2{transform:rotateY(14deg) translateZ(-10px) scale(.95)}
+  .phone.mid{transform:translateY(-18px) scale(1.04);z-index:6;box-shadow:0 50px 100px var(--glow)}
+  .phone.right2{transform:rotateY(-14deg) translateZ(-10px) scale(.95)}
+  .phone.right{transform:rotateY(-24deg) translateZ(-40px) scale(.9)}
+  .phones:not(.in) .phone{transform:translateY(40px) scale(.9)}
+  @media(max-width:920px){.phones{gap:16px}.phone.left,.phone.left2,.phone.mid,.phone.right2,.phone.right{transform:none}.phones:not(.in) .phone{transform:translateY(30px)}.phone.mid{display:flex}}
+  .float{animation:floaty 6s ease-in-out infinite}
+  .float.a{animation-delay:.6s}.float.b{animation-delay:1.4s}.float.c{animation-delay:2.1s}
+  @keyframes floaty{0%,100%{margin-top:0}50%{margin-top:-14px}}
+
+  /* skill bars (dans phone mid + profil live) */
+  .skills{width:100%;margin-top:14px}
+  .sk{margin-bottom:10px}
+  .sk-top{display:flex;justify-content:space-between;font-family:var(--pix);font-size:11px;color:#fff;margin-bottom:5px}
+  .sk-top .pct{color:var(--muted)}
+  .sk-bar{height:7px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+  .sk-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--red),var(--red2));width:0;box-shadow:0 0 10px var(--glow);transition:width 1.4s var(--ease)}
+
+  /* ---- profil live (grand) ---- */
+  .live{position:relative;overflow:hidden}
+  .live-card{position:relative;z-index:3;max-width:760px;margin:56px auto 0;border-radius:22px;border:1px solid var(--line);background:rgba(12,6,5,.55);backdrop-filter:blur(10px);padding:clamp(24px,4vw,44px);box-shadow:0 40px 100px rgba(0,0,0,.6)}
+  .live-top{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+  .live-ava{width:104px;height:104px;border-radius:18px;flex:0 0 auto;background:linear-gradient(150deg,var(--red),var(--red-deep));position:relative;overflow:hidden;box-shadow:0 0 34px var(--glow)}
+  .live-ava::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 25%,rgba(255,205,90,.6),transparent 55%),radial-gradient(circle at 70% 80%,rgba(120,20,15,.7),transparent 60%)}
+  .live-bio{font-family:var(--pix);flex:1;min-width:220px}
+  .live-bio .row{font-size:16px;color:#fff;line-height:1.5}
+  .live-bio .row.mut{color:var(--muted)}
+  .live-badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}
+  .live-badges span{width:22px;height:22px;border-radius:7px;background:rgba(229,52,42,.22);border:1px solid rgba(229,52,42,.4);display:inline-block}
+  .live-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}
+  @media(max-width:560px){.live-links{grid-template-columns:1fr}}
+  .llink{display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);transition:transform .3s var(--ease),background .3s}
+  .llink:hover{transform:translateY(-3px);background:rgba(229,52,42,.08)}
+  .llink .li{width:38px;height:38px;border-radius:10px;background:linear-gradient(150deg,var(--red2),var(--red));flex:0 0 auto;box-shadow:0 0 14px var(--glow)}
+  .llink .lt{font-family:var(--body);font-size:14px;font-weight:600;color:#fff}
+  .llink .ls{font-family:var(--pix);font-size:11px;color:var(--muted)}
+  .llink .join{margin-left:auto;background:linear-gradient(180deg,var(--red2),var(--red));color:#fff;font-size:12px;font-weight:600;padding:6px 14px;border-radius:100px}
+  .live-meta{display:flex;gap:18px;align-items:center;margin-top:24px;font-family:var(--pix);font-size:12px;color:var(--muted);flex-wrap:wrap}
+  .live-clock{position:absolute;top:20px;right:22px;z-index:4;font-family:var(--pix);font-size:12px;color:var(--red2);text-align:right;line-height:1.3}
+
+  /* ---- features ---- */
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:56px}
+  @media(max-width:860px){.feat-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.feat-grid{grid-template-columns:1fr}}
+  .fcard{background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);border:1px solid var(--line);border-radius:18px;padding:26px;transition:transform .4s var(--ease),border-color .4s}
+  .fcard:hover{transform:translateY(-6px);border-color:rgba(229,52,42,.4)}
+  .fic{width:44px;height:44px;border-radius:12px;background:rgba(229,52,42,.14);border:1px solid rgba(229,52,42,.3);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .fic svg{width:22px;height:22px;stroke:var(--red2);fill:none;stroke-width:2}
+  .fcard h4{font-family:var(--disp);font-weight:600;font-size:18px;margin-bottom:8px}
+  .fcard p{color:var(--muted);font-size:14.5px;line-height:1.55}
+  .fchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+  .fchips span{font-family:var(--pix);font-size:11px;color:var(--muted);border:1px solid var(--line);padding:4px 10px;border-radius:100px}
+
+  /* ---- cta ---- */
+  .final{position:relative;overflow:hidden;text-align:center}
+  .final h2{font-family:var(--disp);font-size:clamp(36px,7vw,88px);font-weight:800;letter-spacing:-.04em;line-height:.95;position:relative;z-index:3}
+  .final h2 .red{color:var(--red2);text-shadow:0 0 50px var(--glow)}
+  .final p{position:relative;z-index:3;color:var(--muted);font-size:clamp(16px,2vw,20px);margin:22px auto 34px;max-width:480px}
+  .final .claim{position:relative;z-index:3;max-width:420px}
+  .final-links{position:relative;z-index:3;display:flex;gap:20px;justify-content:center;margin-top:26px;font-family:var(--pix);font-size:14px;color:var(--muted);flex-wrap:wrap}
+  .final-links a{color:var(--red2);text-decoration:none}
+  .final-links a:hover{color:#fff}
+
+  footer{background:#080403;text-align:center;padding:44px 20px;border-top:1px solid var(--line)}
+  footer .logo{justify-content:center;margin-bottom:12px}
+  footer p{color:var(--muted2);font-size:13px;font-family:var(--pix)}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(40px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  .rv.s1{transition-delay:.08s}.rv.s2{transition-delay:.16s}.rv.s3{transition-delay:.24s}.rv.s4{transition-delay:.32s}
+
+  /* ---- à propos (perso) ---- */
+  .about{position:relative;overflow:hidden}
+  .about .smoke i{opacity:.5}
+  .about-grid{display:grid;grid-template-columns:auto 1fr;gap:38px;align-items:center;position:relative;z-index:3}
+  @media(max-width:720px){.about-grid{grid-template-columns:1fr;gap:22px}}
+  .about-ava{width:132px;height:132px;border-radius:26px;flex:0 0 auto;background:linear-gradient(150deg,var(--red),var(--red-deep));position:relative;overflow:hidden;box-shadow:0 0 44px var(--glow)}
+  .about-ava::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 25%,rgba(255,205,90,.6),transparent 55%),radial-gradient(circle at 70% 80%,rgba(120,20,15,.75),transparent 60%)}
+  .about-ava .tag{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:var(--pix);font-size:13px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+  .about-txt h2{font-family:var(--disp);font-weight:800;font-size:clamp(28px,4.6vw,50px);letter-spacing:-.03em;line-height:1.02;margin-bottom:16px}
+  .about-txt h2 .red{color:var(--red2)}
+  .about-txt p{color:var(--muted);font-size:clamp(15.5px,2vw,18px);line-height:1.65;max-width:660px}
+  .about-txt p b{color:#fff;font-weight:600}
+  .fact-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+  .fact-chips span{font-family:var(--pix);font-size:12.5px;color:var(--ink);border:1px solid var(--line);background:rgba(255,255,255,.03);padding:7px 14px;border-radius:100px}
+  .fact-chips span b{color:var(--red2);font-weight:600}
+
+  /* ---- parcours (timeline) ---- */
+  .timeline{margin-top:44px;position:relative;padding-left:28px;max-width:640px}
+  .timeline::before{content:"";position:absolute;left:6px;top:8px;bottom:20px;width:2px;background:linear-gradient(180deg,var(--red2),rgba(229,52,42,.15))}
+  .tl{position:relative;padding:0 0 24px 10px}
+  .tl::before{content:"";position:absolute;left:-28px;top:3px;width:12px;height:12px;border-radius:50%;background:var(--red2);box-shadow:0 0 12px var(--glow);border:2px solid var(--bg)}
+  .tl.goal::before{background:#fff;box-shadow:0 0 14px #fff}
+  .tl h5{font-family:var(--disp);font-size:16px;font-weight:600;color:#fff}
+  .tl h5 .yr{font-family:var(--pix);color:var(--red2);font-size:13px;margin-left:8px}
+  .tl p{color:var(--muted);font-size:14px;margin-top:3px;line-height:1.5}
+
+  /* ---- en dehors du code ---- */
+  .fic.emo{font-size:24px;line-height:1}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important;transition-duration:.01ms !important}
+    .rv,.load,.phone,.chart-area{opacity:1 !important;transform:none !important;filter:none !important}
+    .chart-line{stroke-dashoffset:0 !important}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav id="nav">
+  <a href="#top" class="logo">
+    <svg viewBox="0 0 32 32"><path d="M16 4C8 4 3 10 3 15c0 2 2 3 5 3h16c3 0 5-1 5-3 0-5-5-11-13-11Z" fill="#e5342a"/><circle cx="11" cy="12" r="2" fill="#fff"/><circle cx="19.5" cy="10" r="2.4" fill="#fff"/><circle cx="22.5" cy="14.5" r="1.6" fill="#fff"/><path d="M13 18v7c0 2 6 2 6 0v-7Z" fill="#f0e2d0"/></svg>
+    Regret
+  </a>
+  <div class="nav-links">
+    <a href="#about">À propos</a>
+    <a href="#plateforme">La plateforme</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#profils">Profils</a>
+    <a href="#live">Le profil</a>
+    <a href="#final" class="cta">Get Started →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="smoke"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+  <div class="hero-inner">
+    <div class="badge load d1"><span class="dot"></span>Public beta · Free forever</div>
+    <h1 class="load d2">Je construis<br><span class="red">mush.rip</span>.</h1>
+    <p class="lead load d3">Moi c'est <b>Regret</b>. Étudiant à Paris, développeur IA, et créateur de <b>mush.rip</b> — la plateforme link-in-bio que je construis de zéro.</p>
+    <div class="hero-cta load d4">
+      <a href="#plateforme" class="btn btn-red">Voir la plateforme →</a>
+      <span class="handle">mush.rip/<b>regret</b></span>
+    </div>
+  </div>
+  <div class="scroll-cue load d5">
+    <span>SCROLL FOR MORE</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+</header>
+
+<!-- À PROPOS (perso) -->
+<section class="about" id="about">
+  <div class="smoke"><i class="s2"></i></div>
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-ava rv"><div class="tag">regret</div></div>
+      <div class="about-txt">
+        <p class="kicker rv">Salut 👋</p>
+        <h2 class="rv s1">Un dev qui aime<br>construire <span class="red">ses propres trucs</span>.</h2>
+        <p class="rv s2">J'ai commencé en bidouillant des clients Discord — modding, Lightcord, tout ce qui se démonte. De fil en aiguille, j'ai voulu <b>construire au lieu de modifier</b> : des bots, une app de chat, puis toute une plateforme. Aujourd'hui je passe le plus clair de mon temps sur <b>mush.rip</b>, et je vise l'école <b>Epitech</b> à Paris pour aller encore plus loin.</p>
+        <div class="fact-chips rv s3">
+          <span>📍 Paris</span>
+          <span>🎯 Cap <b>Epitech</b></span>
+          <span>🎓 Bac STI2D · SIN</span>
+          <span>🧠 Dev <b>IA</b></span>
+          <span>⚙️ Autodidacte</span>
+          <span>🍄 Owner <b>mush.rip</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="tl rv"><h5>Modding Discord <span class="yr">le départ</span></h5><p>Lightcord, clients custom, thèmes — comprendre comment les choses sont faites en les démontant.</p></div>
+      <div class="tl rv s1"><h5>Premiers bots</h5><p>Apprendre en construisant : commandes, bases de données, automatisations sur Discord.</p></div>
+      <div class="tl rv s1"><h5>flockocord</h5><p>Une app de chat originale, codée from scratch en Node.js, Express, WebSocket, SQLite & JWT.</p></div>
+      <div class="tl rv s2"><h5>Wingman</h5><p>Une communauté Counter-Strike 2 et son bot Discord.js : matchmaking, anti-raid, tournois.</p></div>
+      <div class="tl rv s2"><h5>mush.rip <span class="yr">aujourd'hui</span></h5><p>La plateforme link-in-bio et son écosystème de bots. Mon projet principal.</p></div>
+      <div class="tl goal rv s3"><h5>Objectif</h5><p>Intégrer Epitech, à Paris — et continuer à repousser mes projets.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LA PLATEFORME (landing preview) -->
+<section id="plateforme">
+  <div class="wrap">
+    <p class="kicker rv">La plateforme · aperçu en direct</p>
+    <h2 class="sec-title rv s1">Everything you are,<br>behind one link.</h2>
+    <p class="sec-sub rv s2">La page d'accueil de mush.rip : tes liens, réseaux, musique et stats, réunis sur une seule page personnalisable.</p>
+    <div class="frame rv s2" style="margin-top:46px">
+      <div class="frame-bar"><span class="fd r"></span><span class="fd y"></span><span class="fd g"></span><span class="frame-url">https://mush.rip</span></div>
+      <div class="frame-body">
+        <div class="mini">
+          <div class="smoke"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+          <div class="mini-nav">
+            <span class="logo"><svg viewBox="0 0 32 32"><path d="M16 4C8 4 3 10 3 15c0 2 2 3 5 3h16c3 0 5-1 5-3 0-5-5-11-13-11Z" fill="#e5342a"/><circle cx="11" cy="12" r="2" fill="#fff"/><circle cx="19.5" cy="10" r="2.4" fill="#fff"/></svg>mush.rip</span>
+            <span>Dashboard</span><span>Leaderboard</span><span>FAQ</span>
+            <span class="mred">Get Started ›</span>
+          </div>
+          <div class="mini-hero">
+            <div class="mini-badge">✨ Public beta. Free forever.</div>
+            <h3>Everything you are,<br><span class="red">behind one link.</span></h3>
+            <p>Your links, socials, music and stats. All living on one mush.rip/you page.</p>
+            <div class="claim">
+              <span class="pfx">mush.rip/</span>
+              <span class="typed" id="typed"></span><span class="caret"></span>
+              <button class="cbtn">Claim →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+  <div class="wrap">
+    <p class="kicker rv">Le tableau de bord</p>
+    <h2 class="sec-title rv s1">Tout se pilote<br>depuis un seul endroit.</h2>
+    <p class="sec-sub rv s2">Overview, profil, liens, apparence et analytics — les stats de ta page se mettent à jour en temps réel.</p>
+    <div class="frame rv s2" id="dashframe" style="margin-top:46px">
+      <div class="frame-bar"><span class="fd r"></span><span class="fd y"></span><span class="fd g"></span><span class="frame-url">mush.rip/dashboard</span></div>
+      <div class="frame-body">
+        <div class="dash">
+          <aside class="dash-side">
+            <span class="logo"><svg viewBox="0 0 32 32"><path d="M16 4C8 4 3 10 3 15c0 2 2 3 5 3h16c3 0 5-1 5-3 0-5-5-11-13-11Z" fill="#e5342a"/><circle cx="11" cy="12" r="2" fill="#fff"/><circle cx="19.5" cy="10" r="2.4" fill="#fff"/></svg>mush.rip</span>
+            <div class="item active">Overview</div>
+            <div class="item">Profile</div>
+            <div class="item">Links</div>
+            <div class="item">Appearance</div>
+            <div class="item">Analytics</div>
+          </aside>
+          <div class="dash-main">
+            <h4>Account Overview</h4>
+            <div class="dash-stats">
+              <div class="dstat"><div class="lbl">Vues du profil</div><div class="val"><span class="count" data-to="1240">0</span></div></div>
+              <div class="dstat"><div class="lbl">Clics sur liens</div><div class="val"><span class="count" data-to="864">0</span></div></div>
+              <div class="dstat"><div class="lbl">Membres Discord</div><div class="val"><span class="count" data-to="110">0</span></div></div>
+            </div>
+            <div class="chart-box">
+              <svg viewBox="0 0 520 150" preserveAspectRatio="none">
+                <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e5342a" stop-opacity=".45"/><stop offset="1" stop-color="#e5342a" stop-opacity="0"/></linearGradient></defs>
+                <path class="chart-area" d="M0,120 L40,105 L90,118 L140,92 L190,100 L240,64 L290,80 L340,44 L390,66 L440,34 L490,52 L520,30 L520,150 L0,150 Z"/>
+                <path class="chart-line" d="M0,120 L40,105 L90,118 L140,92 L190,100 L240,64 L290,80 L340,44 L390,66 L440,34 L490,52 L520,30"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILS -->
+<section id="profils">
+  <div class="wrap center">
+    <p class="kicker rv">See real profiles</p>
+    <h2 class="sec-title rv s1">Des profils réels,<br>en direct.</h2>
+    <p class="sec-sub rv s2">Chaque page mush.rip est unique : avatar, badges, skills et liens, avec ambiance sonore et fond animé.</p>
+    <div class="phones" id="phones">
+      <div class="phone left float a">
+        <div class="screen"><div class="scr-smoke smoke"><i class="s1"></i><i class="s2"></i></div>
+          <div class="notch"></div><div class="clock">19:10<br>TORONTO</div>
+          <div class="p-body"><div class="p-ava"></div><div class="p-name">awfulbro</div><div class="p-role">FOUNDER MUSH.RIP</div><div class="p-badges"><span></span><span></span><span></span></div></div>
+        </div><div class="p-handle">mush.rip/awfulbro</div>
+      </div>
+      <div class="phone left2 float b">
+        <div class="screen"><div class="scr-smoke smoke"><i class="s2"></i></div>
+          <div class="notch"></div><div class="clock">01:18</div>
+          <div class="p-body"><div class="p-ava"></div><div class="p-name">canta</div><div class="p-role">CREATOR OF MUSH.RIP</div><div class="p-badges"><span></span><span></span></div></div>
+        </div><div class="p-handle">mush.rip/x</div>
+      </div>
+      <div class="phone mid float">
+        <div class="screen"><div class="scr-smoke smoke"><i class="s1"></i><i class="s3"></i></div>
+          <div class="notch"></div><div class="clock" id="pclock">01:18<br>PARIS</div>
+          <div class="p-body">
+            <div class="p-ava"></div><div class="p-name">regrettable</div>
+            <div class="p-badges"><span></span><span></span><span></span><span></span></div>
+            <div class="p-role">EPITECH student · Mush.rip OWNER<br>mush.rip/regret</div>
+            <div class="skills">
+              <div class="sk"><div class="sk-top"><span>Dev IA</span><span class="pct">75%</span></div><div class="sk-bar"><div class="sk-fill" data-w="75"></div></div></div>
+              <div class="sk"><div class="sk-top"><span>Traitement audio</span><span class="pct">40%</span></div><div class="sk-bar"><div class="sk-fill" data-w="40"></div></div></div>
+            </div>
+          </div>
+        </div><div class="p-handle">mush.rip/regret</div>
+      </div>
+      <div class="phone right2 float c">
+        <div class="screen"><div class="scr-smoke smoke"><i class="s2"></i></div>
+          <div class="notch"></div><div class="clock">03:06</div>
+          <div class="p-body"><div class="p-ava"></div><div class="p-name">azk</div><div class="p-role">Azkatoo</div><div class="p-badges"><span></span><span></span><span></span></div></div>
+        </div><div class="p-handle">mush.rip/qlf</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFIL LIVE -->
+<section class="live" id="live">
+  <div class="smoke"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+  <div class="wrap center" style="position:relative;z-index:3">
+    <p class="kicker rv">mush.rip/regret · live</p>
+    <h2 class="sec-title rv s1">Mon propre profil.</h2>
+    <p class="sec-sub rv s2">Le créateur, sur sa propre plateforme. Skills animés, liens Discord et présence en temps réel.</p>
+  </div>
+  <div class="live-card rv s2">
+    <div class="live-clock" id="liveclock">01:18:53<br>Paris</div>
+    <div class="live-top">
+      <div class="live-ava"></div>
+      <div class="live-bio">
+        <div class="live-badges"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="row">EPITECH student</div>
+        <div class="row">Mush.rip OWNER</div>
+        <div class="row mut">mush.rip/regret</div>
+        <div class="row mut">discord.gg/mushbio</div>
+        <div class="row mut" style="font-style:italic;margin-top:6px">Rode nt1</div>
+      </div>
+    </div>
+    <div class="skills" style="margin-top:26px" id="liveskills">
+      <div class="sk"><div class="sk-top"><span>Dev IA</span><span class="pct">75%</span></div><div class="sk-bar"><div class="sk-fill" data-w="75"></div></div></div>
+      <div class="sk"><div class="sk-top"><span>Traitement audio</span><span class="pct">40%</span></div><div class="sk-bar"><div class="sk-fill" data-w="40"></div></div></div>
+    </div>
+    <div class="live-links">
+      <div class="llink"><div class="li"></div><div><div class="lt">mush.rip</div><div class="ls">43 en ligne · 110 membres</div></div><div class="join">join</div></div>
+      <div class="llink"><div class="li"></div><div><div class="lt">Contact | Mush.rip</div><div class="ls">mush.rip@proton.me</div></div></div>
+      <div class="llink"><div class="li"></div><div><div class="lt">Site | Mush.rip</div><div class="ls">mush.rip</div></div></div>
+      <div class="llink"><div class="li"></div><div><div class="lt">regret · Offline</div><div class="ls">Boosting 1 month · Nitro since 2026</div></div></div>
+    </div>
+    <div class="live-meta"><span>👁 80 vues</span><span>📍 Paris</span><span>📅 August 23, 2026</span></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <p class="kicker rv">Sous le capot</p>
+    <h2 class="sec-title rv s1">Plus qu'une page :<br>tout un écosystème.</h2>
+    <div class="feat-grid">
+      <div class="fcard rv s1">
+        <div class="fic"><svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></div>
+        <h4>Bots Discord</h4>
+        <p>Un bot de protection anti-raid et un pont temps réel qui relie chaque page mush.rip à ton serveur Discord.</p>
+        <div class="fchips"><span>Anti-raid</span><span>Discord.js</span><span>Temps réel</span></div>
+      </div>
+      <div class="fcard rv s2">
+        <div class="fic"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+        <h4>Analytics</h4>
+        <p>Vues, clics et croissance de tes liens, suivis en direct depuis le dashboard avec des graphiques clairs.</p>
+        <div class="fchips"><span>Vues</span><span>Clics</span><span>Live</span></div>
+      </div>
+      <div class="fcard rv s3">
+        <div class="fic"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 21l-5-2.9 1-5.5-4-3.9 5.5-.8z"/></svg></div>
+        <h4>Personnalisation</h4>
+        <p>Avatar, badges, skills, fond animé et audio : chaque profil se façonne dans l'onglet Appearance.</p>
+        <div class="fchips"><span>Thèmes</span><span>Badges</span><span>Audio</span></div>
+      </div>
+      <div class="fcard rv s1">
+        <div class="fic"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M6 3h12v5a6 6 0 01-12 0zM6 5H3v2a3 3 0 003 3M18 5h3v2a3 3 0 01-3 3"/></svg></div>
+        <h4>Leaderboard</h4>
+        <p>Un classement public des profils les plus vus qui pousse la communauté à créer les plus belles pages.</p>
+        <div class="fchips"><span>Communauté</span><span>Classement</span></div>
+      </div>
+      <div class="fcard rv s2">
+        <div class="fic"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM2 12h20M12 2a15 15 0 000 20 15 15 0 000-20z"/></svg></div>
+        <h4>Une page, un lien</h4>
+        <p>mush.rip/toi centralise tes réseaux, ta musique et tes stats derrière une seule URL mémorable.</p>
+        <div class="fchips"><span>Link-in-bio</span><span>Free forever</span></div>
+      </div>
+      <div class="fcard rv s3">
+        <div class="fic"><svg viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"/></svg></div>
+        <h4>Fait maison</h4>
+        <p>Front, back, base de données et bots : toute la stack de mush.rip est développée depuis zéro.</p>
+        <div class="fchips"><span>Full-stack</span><span>Node.js</span><span>From scratch</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTRES BUILDS -->
+<section id="builds">
+  <div class="wrap">
+    <p class="kicker rv">Mes autres builds</p>
+    <h2 class="sec-title rv s1">mush.rip n'est pas<br>mon seul bébé.</h2>
+    <div class="feat-grid" style="grid-template-columns:1fr 1fr">
+      <div class="fcard rv s1">
+        <div class="fic"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3z"/></svg></div>
+        <h4>flockocord</h4>
+        <p>Une application de chat originale, développée entièrement depuis zéro. Temps réel, auth sécurisée et une UI dark & industrielle. Née de ma période modding.</p>
+        <div class="fchips"><span>Node.js</span><span>Express</span><span>WebSocket</span><span>SQLite</span><span>JWT</span></div>
+      </div>
+      <div class="fcard rv s2">
+        <div class="fic"><svg viewBox="0 0 24 24"><path d="M8 11a4 4 0 108 0M4 20a8 8 0 0116 0M9 8h.01M15 8h.01"/></svg></div>
+        <h4>Wingman</h4>
+        <p>Un serveur communautaire Counter-Strike 2 et son bot Discord : commandes slash, matchmaking, anti-raid et tournois. Une v2 plus complète est en cours.</p>
+        <div class="fchips"><span>Discord.js</span><span>SQLite</span><span>Matchmaking</span><span>CS2</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EN DEHORS DU CODE -->
+<section id="beyond">
+  <div class="wrap">
+    <p class="kicker rv">En dehors du code</p>
+    <h2 class="sec-title rv s1">Ce qui me fait<br>vibrer aussi.</h2>
+    <div class="feat-grid">
+      <div class="fcard rv s1">
+        <div class="fic emo">🎧</div>
+        <h4>Production audio</h4>
+        <p>Traitement du son et bidouille studio, micro Rode NT1 à l'appui. La même précision que dans le code.</p>
+      </div>
+      <div class="fcard rv s2">
+        <div class="fic emo">🚗</div>
+        <h4>Automobile</h4>
+        <p>Passionné de performance et de belle mécanique. Objectif à moyen terme : une BMW M3 Touring G81.</p>
+      </div>
+      <div class="fcard rv s3">
+        <div class="fic emo">🎮</div>
+        <h4>Gaming</h4>
+        <p>Counter-Strike 2 en tête — d'ailleurs c'est ce qui a donné naissance à Wingman.</p>
+      </div>
+      <div class="fcard rv s1">
+        <div class="fic emo">🖥️</div>
+        <h4>High-perf computing</h4>
+        <p>Builds PC, optimisation et matériel qui pousse. J'aime quand ça tourne vite et proprement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="final" id="final">
+  <div class="smoke"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+  <div class="wrap">
+    <h2 class="rv">Réclame ton<br><span class="red">mush.rip</span>.</h2>
+    <p class="rv s1">Rejoins la beta publique, ou parle-moi d'un projet — dev IA, web ou bots Discord.</p>
+    <div class="claim rv s2">
+      <span class="pfx">mush.rip/</span>
+      <span class="typed" id="typed2">yourname</span>
+      <button class="cbtn">Claim →</button>
+    </div>
+    <div class="final-links rv s3">
+      <a href="https://mush.rip">mush.rip</a>
+      <a href="https://discord.gg/mushbio">discord.gg/mushbio</a>
+      <a href="mailto:mush.rip@proton.me">mush.rip@proton.me</a>
+    </div>
+    <p class="rv s3" style="margin-top:34px;font-family:var(--pix);color:var(--muted2);font-size:14px">Merci d'être passé. — Regret 🍄</p>
+  </div>
+</section>
+
+<footer>
+  <a href="#top" class="logo">
+    <svg viewBox="0 0 32 32"><path d="M16 4C8 4 3 10 3 15c0 2 2 3 5 3h16c3 0 5-1 5-3 0-5-5-11-13-11Z" fill="#e5342a"/><circle cx="11" cy="12" r="2" fill="#fff"/><circle cx="19.5" cy="10" r="2.4" fill="#fff"/><path d="M13 18v7c0 2 6 2 6 0v-7Z" fill="#f0e2d0"/></svg>
+    Regret
+  </a>
+  <p>Créateur de mush.rip · Développeur IA · Paris · © 2026</p>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  window.addEventListener('load', function(){ requestAnimationFrame(function(){ document.body.classList.add('loaded'); }); });
+  if(document.readyState==='complete') document.body.classList.add('loaded');
+
+  var nav=document.getElementById('nav'), progress=document.getElementById('progress');
+  function onScroll(){
+    var y=window.scrollY||window.pageYOffset;
+    nav.classList.toggle('scrolled', y>30);
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    progress.style.width=(h>0?(y/h*100):0)+'%';
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  /* reveals + déclencheurs */
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var t=e.target;
+      t.classList.add('in');
+      if(t.classList.contains('rv')) io.unobserve(t);
+
+      if(t.id==='phones'||t.id==='live'){
+        t.querySelectorAll('.sk-fill').forEach(function(f){ f.style.width=f.getAttribute('data-w')+'%'; });
+      }
+      if(t.id==='dashframe'){ runCounters(t); }
+    });
+  },{threshold:.2, rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rv,#phones,#live,#dashframe').forEach(function(el){ io.observe(el); });
+
+  /* longueur du tracé pour le chart */
+  var line=document.querySelector('.chart-line');
+  if(line){ try{ line.style.setProperty('--len', line.getTotalLength()); }catch(e){ line.style.setProperty('--len',900);} }
+
+  /* compteurs */
+  var didCount=false;
+  function runCounters(scope){
+    if(didCount) return; didCount=true;
+    scope.querySelectorAll('.count').forEach(function(c){
+      var to=+c.getAttribute('data-to'),dur=1600,t0=null;
+      if(reduce){ c.textContent=to.toLocaleString('fr-FR'); return; }
+      function step(ts){ if(!t0)t0=ts; var p=Math.min((ts-t0)/dur,1); var e=1-Math.pow(1-p,3);
+        c.textContent=Math.round(to*e).toLocaleString('fr-FR'); if(p<1) requestAnimationFrame(step);}
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* machine à écrire dans le champ Claim */
+  var names=['regret','awfulbro','canta','azkatoo','yourname'];
+  var el=document.getElementById('typed');
+  if(el && !reduce){
+    var ni=0,ci=0,del=false;
+    function tick(){
+      var w=names[ni];
+      el.textContent = del ? w.slice(0,ci--) : w.slice(0,ci++);
+      var wait=del?45:95;
+      if(!del && ci>w.length){ del=true; wait=1300; }
+      else if(del && ci<0){ del=false; ci=0; ni=(ni+1)%names.length; wait=350; }
+      setTimeout(tick,wait);
+    }
+    tick();
+  } else if(el){ el.textContent='regret'; }
+
+  /* horloges live */
+  function two(n){return (n<10?'0':'')+n;}
+  function updClocks(){
+    var now=new Date();
+    var hm=two(now.getHours())+':'+two(now.getMinutes());
+    var hms=hm+':'+two(now.getSeconds());
+    var lc=document.getElementById('liveclock'); if(lc) lc.innerHTML=hms+'<br>Paris';
+    var pc=document.getElementById('pclock'); if(pc) pc.innerHTML=hm+'<br>PARIS';
+  }
+  updClocks(); if(!reduce) setInterval(updClocks,1000);
+})();
+</script>
+</body>
+</html>
