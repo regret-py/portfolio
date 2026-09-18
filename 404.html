@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — Julien</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0e0f12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0f12;--surface-2:#1d2026;--text:#e9ebee;--muted:#9ba1a8;--dim:#6a7078;--accent:#5b9dff;--border-2:rgba(255,255,255,.13);--fd:'Space Grotesk',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(120% 80% at 50% -10%,rgba(91,157,255,.10),transparent 60%),var(--bg);color:var(--text);font-family:var(--fb);display:grid;place-items:center;text-align:center;padding:24px}
+.wrap{max-width:440px}
+.code{position:relative;font-family:var(--fd);font-weight:300;font-size:clamp(88px,22vw,150px);line-height:1;letter-spacing:-.03em;margin:0}
+.cubes{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;width:120px;margin:0 auto 26px;aspect-ratio:1}
+.cubes i{background:var(--surface-2);border-radius:4px;aspect-ratio:1;opacity:0;animation:pop .5s cubic-bezier(.34,1.56,.5,1) forwards}
+h1{font-family:var(--fd);font-weight:500;font-size:22px;margin:22px 0 8px;letter-spacing:-.01em}
+p{color:var(--muted);margin:0 0 28px;font-size:15.5px;line-height:1.6}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:12px;background:var(--text);color:var(--bg);font-weight:500;font-size:15px;text-decoration:none;transition:opacity .18s}
+.btn:hover{opacity:.88}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(3px)}
+@keyframes pop{to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.cubes i{opacity:1;animation:none}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="cubes" id="cubes" aria-hidden="true"></div>
+    <p class="code">404</p>
+    <h1>This page slipped through.</h1>
+    <p>The link is broken or the page moved. Let's get you back.</p>
+    <a class="btn" href="/">Back home
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+<script>
+  var g=document.getElementById('cubes'), order=[];
+  for(var i=0;i<36;i++) order.push(i);
+  for(var i=order.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=order[i];order[i]=order[j];order[j]=t; }
+  var delay={}; order.forEach(function(v,idx){ delay[v]=idx*22; });
+  for(var i=0;i<36;i++){ var c=document.createElement('i'); c.style.animationDelay=delay[i]+'ms'; if(Math.random()<0.22) c.style.background='var(--accent)'; g.appendChild(c); }
+</script>
+</body>
+</html>
