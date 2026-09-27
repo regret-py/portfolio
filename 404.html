@@ -1,64 +1,50 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>404 — Julien</title>
+<title>404 · Julien</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0e0f12">
+<meta name="theme-color" content="#f2efe9">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script>
 (function(){var t=null;try{t=localStorage.getItem('theme');}catch(e){}
-if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}
+if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e0f12;--surface-2:#1d2026;--text:#e9ebee;--muted:#9ba1a8;--dim:#7f868f;--accent:#5b9dff;--border-2:rgba(255,255,255,.13);--glow:rgba(91,157,255,.10);--fd:'Space Grotesk',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
-[data-theme="light"]{--bg:#f5f6f8;--surface-2:#e3e6ea;--text:#14171c;--muted:#525961;--dim:#676e77;--accent:#2f6fed;--border-2:rgba(12,15,20,.18);--glow:rgba(47,111,237,.10)}
+:root{--bg:#f2efe9;--text:#171512;--muted:#524d46;--dim:#6b655c;--rule:rgba(23,21,18,.13);--mark:#ff5a1f}
+[data-theme="dark"]{--bg:#141311;--text:#ebe7de;--muted:#b0a99d;--dim:#8f887c;--rule:rgba(235,231,222,.12)}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:radial-gradient(120% 80% at 50% -10%,var(--glow),transparent 60%),var(--bg);color:var(--text);font-family:var(--fb);display:grid;place-items:center;text-align:center;padding:24px}
-.wrap{max-width:440px}
-.code{position:relative;font-family:var(--fd);font-weight:300;font-size:clamp(88px,22vw,150px);line-height:1;letter-spacing:-.03em;margin:0}
-.cubes{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;width:120px;margin:0 auto 26px;aspect-ratio:1}
-.cubes i{background:var(--surface-2);border-radius:4px;aspect-ratio:1;opacity:0;animation:pop .5s cubic-bezier(.34,1.56,.5,1) forwards}
-h1{font-family:var(--fd);font-weight:500;font-size:22px;margin:22px 0 8px;letter-spacing:-.01em}
-p{color:var(--muted);margin:0 0 28px;font-size:15.5px;line-height:1.6}
-.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:12px;background:var(--text);color:var(--bg);font-weight:500;font-size:15px;text-decoration:none;transition:opacity .18s}
-.btn:hover{opacity:.88}
-.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.btn svg{transition:transform .18s}
-.btn:hover svg{transform:translateX(3px)}
-@keyframes pop{to{opacity:1}}
-@media(prefers-reduced-motion:reduce){.cubes i{opacity:1;animation:none}}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',ui-monospace,monospace;display:grid;place-items:center;padding:24px}
+.wrap{width:min(520px,100%);border-top:1px solid var(--rule);padding-top:22px}
+.code{font-size:13px;color:var(--dim);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.code::before{content:"";width:8px;height:8px;background:var(--mark)}
+h1{font-family:'IBM Plex Serif',Georgia,serif;font-weight:400;font-size:clamp(30px,6vw,42px);line-height:1.15;margin:0 0 14px}
+p{color:var(--muted);font-family:system-ui,sans-serif;font-size:16px;line-height:1.6;margin:0 0 26px}
+a{color:var(--text);font-size:14px;text-underline-offset:4px}
+a:hover{color:var(--mark)}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="cubes" id="cubes" aria-hidden="true"></div>
-    <p class="code">404</p>
-    <h1 id="t">This page slipped through.</h1>
-    <p id="d">The link is broken or the page moved. Let's get you back.</p>
-    <a class="btn" href="/"><span id="b">Back home</span>
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </a>
-  </div>
+  <main class="wrap">
+    <p class="code">error 404</p>
+    <h1 id="t">Nothing here.</h1>
+    <p id="d">The link is broken or the page has moved.</p>
+    <a href="/" id="b">← back to the homepage</a>
+  </main>
 <script>
   var L=null; try{ L=localStorage.getItem('lang'); }catch(e){}
   if(L==='fr'||(L!=='en'&&/^fr\b/i.test(navigator.language||''))){
-    document.documentElement.lang='fr'; document.title='404 — Julien';
-    document.getElementById('t').textContent='Cette page s’est échappée.';
-    document.getElementById('d').textContent='Le lien est cassé ou la page a bougé. On te ramène.';
-    document.getElementById('b').textContent='Retour à l’accueil';
+    document.documentElement.lang='fr';
+    document.getElementById('t').textContent='Rien ici.';
+    document.getElementById('d').textContent='Le lien est cassé ou la page a changé d’adresse.';
+    document.getElementById('b').textContent='← retour à l’accueil';
   }
-  var g=document.getElementById('cubes'), order=[];
-  for(var i=0;i<36;i++) order.push(i);
-  for(var i=order.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=order[i];order[i]=order[j];order[j]=t; }
-  var delay={}; order.forEach(function(v,idx){ delay[v]=idx*22; });
-  for(var i=0;i<36;i++){ var c=document.createElement('i'); c.style.animationDelay=delay[i]+'ms'; if(Math.random()<0.22) c.style.background='var(--accent)'; g.appendChild(c); }
 </script>
 </body>
 </html>
