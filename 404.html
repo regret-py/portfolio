@@ -6,14 +6,21 @@
 <title>404 — Julien</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0e0f12">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+(function(){var t=null;try{t=localStorage.getItem('theme');}catch(e){}
+if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e0f12;--surface-2:#1d2026;--text:#e9ebee;--muted:#9ba1a8;--dim:#6a7078;--accent:#5b9dff;--border-2:rgba(255,255,255,.13);--fd:'Space Grotesk',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
+:root{--bg:#0e0f12;--surface-2:#1d2026;--text:#e9ebee;--muted:#9ba1a8;--dim:#7f868f;--accent:#5b9dff;--border-2:rgba(255,255,255,.13);--glow:rgba(91,157,255,.10);--fd:'Space Grotesk',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
+[data-theme="light"]{--bg:#f5f6f8;--surface-2:#e3e6ea;--text:#14171c;--muted:#525961;--dim:#676e77;--accent:#2f6fed;--border-2:rgba(12,15,20,.18);--glow:rgba(47,111,237,.10)}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:radial-gradient(120% 80% at 50% -10%,rgba(91,157,255,.10),transparent 60%),var(--bg);color:var(--text);font-family:var(--fb);display:grid;place-items:center;text-align:center;padding:24px}
+body{margin:0;background:radial-gradient(120% 80% at 50% -10%,var(--glow),transparent 60%),var(--bg);color:var(--text);font-family:var(--fb);display:grid;place-items:center;text-align:center;padding:24px}
 .wrap{max-width:440px}
 .code{position:relative;font-family:var(--fd);font-weight:300;font-size:clamp(88px,22vw,150px);line-height:1;letter-spacing:-.03em;margin:0}
 .cubes{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;width:120px;margin:0 auto 26px;aspect-ratio:1}
@@ -22,6 +29,7 @@ h1{font-family:var(--fd);font-weight:500;font-size:22px;margin:22px 0 8px;letter
 p{color:var(--muted);margin:0 0 28px;font-size:15.5px;line-height:1.6}
 .btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:12px;background:var(--text);color:var(--bg);font-weight:500;font-size:15px;text-decoration:none;transition:opacity .18s}
 .btn:hover{opacity:.88}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .btn svg{transition:transform .18s}
 .btn:hover svg{transform:translateX(3px)}
 @keyframes pop{to{opacity:1}}
@@ -32,13 +40,20 @@ p{color:var(--muted);margin:0 0 28px;font-size:15.5px;line-height:1.6}
   <div class="wrap">
     <div class="cubes" id="cubes" aria-hidden="true"></div>
     <p class="code">404</p>
-    <h1>This page slipped through.</h1>
-    <p>The link is broken or the page moved. Let's get you back.</p>
-    <a class="btn" href="/">Back home
+    <h1 id="t">This page slipped through.</h1>
+    <p id="d">The link is broken or the page moved. Let's get you back.</p>
+    <a class="btn" href="/"><span id="b">Back home</span>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
   </div>
 <script>
+  var L=null; try{ L=localStorage.getItem('lang'); }catch(e){}
+  if(L==='fr'||(L!=='en'&&/^fr\b/i.test(navigator.language||''))){
+    document.documentElement.lang='fr'; document.title='404 — Julien';
+    document.getElementById('t').textContent='Cette page s’est échappée.';
+    document.getElementById('d').textContent='Le lien est cassé ou la page a bougé. On te ramène.';
+    document.getElementById('b').textContent='Retour à l’accueil';
+  }
   var g=document.getElementById('cubes'), order=[];
   for(var i=0;i<36;i++) order.push(i);
   for(var i=order.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=order[i];order[i]=order[j];order[j]=t; }
