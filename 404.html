@@ -1,50 +1,44 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>404 · Julien</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'sha256-oAFvM8afBf4IaYT08p9IkHXgJcQhJDCIne/Bclwk0/s='; connect-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Page not found · Julien</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#f2efe9">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<script>
-(function(){var t=null;try{t=localStorage.getItem('theme');}catch(e){}
-if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}
-document.documentElement.setAttribute('data-theme',t);})();
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif&display=swap" rel="stylesheet">
+<!-- Theme + language. If you edit this script, update its sha256 in the CSP above (see README). -->
+<script>(function(d){var r=d.documentElement,t,l;try{t=localStorage.getItem("theme");l=localStorage.getItem("lang")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";r.setAttribute("data-theme",t);if(l==="fr"||(l!=="en"&&/^fr\b/i.test(navigator.language||""))){r.lang="fr";d.title="Page introuvable · Julien";d.addEventListener("DOMContentLoaded",function(){d.getElementById("c").textContent="erreur 404";d.getElementById("t").textContent="Cette page n’existe pas.";d.getElementById("d").textContent="Le lien est peut-être incorrect, ou la page a été déplacée.";d.getElementById("b").textContent="← Retour à l’accueil"})}})(document)</script>
 <style>
-:root{--bg:#f2efe9;--text:#171512;--muted:#524d46;--dim:#6b655c;--rule:rgba(23,21,18,.13);--mark:#ff5a1f}
-[data-theme="dark"]{--bg:#141311;--text:#ebe7de;--muted:#b0a99d;--dim:#8f887c;--rule:rgba(235,231,222,.12)}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(/assets/fonts/IBMPlexMono-Regular-Latin1.woff2) format("woff2");unicode-range:U+0000,U+000D,U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2013-2014,U+2018-201A,U+201C-201E,U+2020-2022,U+2026,U+2030,U+2039-203A,U+2044,U+20AC,U+2122,U+2212,U+FB01-FB02}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(/assets/fonts/IBMPlexMono-Regular-Pi.woff2) format("woff2");unicode-range:U+2000-200D,U+202F,U+2190-2199}
+@font-face{font-family:"IBM Plex Serif";font-weight:400;font-display:swap;src:url(/assets/fonts/IBMPlexSerif-Regular-Latin1.woff2) format("woff2");unicode-range:U+0000,U+000D,U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2013-2014,U+2018-201A,U+201C-201E,U+2020-2022,U+2026,U+2030,U+2039-203A,U+2044,U+20AC,U+2122,U+2212,U+FB01-FB02}
+@font-face{font-family:"IBM Plex Sans";font-weight:400;font-display:swap;src:url(/assets/fonts/IBMPlexSans-Regular-Latin1.woff2) format("woff2");unicode-range:U+0000,U+000D,U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2013-2014,U+2018-201A,U+201C-201E,U+2020-2022,U+2026,U+2030,U+2039-203A,U+2044,U+20AC,U+2122,U+2212,U+FB01-FB02}
+:root{--bg:#f2efe9;--text:#171512;--muted:#524d46;--dim:#6b655c;--rule:rgba(23,21,18,.13);--mark:#ff5a1f;--accent:#b53c0a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141311;--text:#ebe7de;--muted:#b0a99d;--dim:#8f887c;--rule:rgba(235,231,222,.12);--accent:#ff8350;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141311;--text:#ebe7de;--muted:#b0a99d;--dim:#8f887c;--rule:rgba(235,231,222,.12);--accent:#ff8350;color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',ui-monospace,monospace;display:grid;place-items:center;padding:24px}
-.wrap{width:min(520px,100%);border-top:1px solid var(--rule);padding-top:22px}
-.code{font-size:13px;color:var(--dim);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+body{margin:0;display:grid;place-items:center;padding:24px;background:var(--bg);color:var(--text);font-family:"IBM Plex Mono",ui-monospace,monospace;-webkit-font-smoothing:antialiased}
+.wrap{width:min(540px,100%);padding-top:22px;border-top:1px solid var(--rule)}
+.code{display:flex;align-items:center;gap:10px;margin:0 0 18px;font:400 13px "IBM Plex Mono",ui-monospace,monospace;color:var(--dim)}
 .code::before{content:"";width:8px;height:8px;background:var(--mark)}
-h1{font-family:'IBM Plex Serif',Georgia,serif;font-weight:400;font-size:clamp(30px,6vw,42px);line-height:1.15;margin:0 0 14px}
-p{color:var(--muted);font-family:system-ui,sans-serif;font-size:16px;line-height:1.6;margin:0 0 26px}
+h1{margin:0 0 14px;font:400 clamp(30px,6vw,42px)/1.15 "IBM Plex Serif",Georgia,serif;text-wrap:balance}
+p{margin:0 0 26px;color:var(--muted);font:400 16px/1.6 "IBM Plex Sans",system-ui,sans-serif}
 a{color:var(--text);font-size:14px;text-underline-offset:4px}
-a:hover{color:var(--mark)}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 </style>
 </head>
 <body>
   <main class="wrap">
-    <p class="code">error 404</p>
-    <h1 id="t">Nothing here.</h1>
-    <p id="d">The link is broken or the page has moved.</p>
-    <a href="/" id="b">← back to the homepage</a>
+    <p class="code" id="c">error 404</p>
+    <h1 id="t">This page does not exist.</h1>
+    <p id="d">The link may be incorrect, or the page has moved.</p>
+    <a href="/" id="b">← Back to the homepage</a>
   </main>
-<script>
-  var L=null; try{ L=localStorage.getItem('lang'); }catch(e){}
-  if(L==='fr'||(L!=='en'&&/^fr\b/i.test(navigator.language||''))){
-    document.documentElement.lang='fr';
-    document.getElementById('t').textContent='Rien ici.';
-    document.getElementById('d').textContent='Le lien est cassé ou la page a changé d’adresse.';
-    document.getElementById('b').textContent='← retour à l’accueil';
-  }
-</script>
 </body>
 </html>

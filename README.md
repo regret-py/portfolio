@@ -1,51 +1,90 @@
-# Julien — portfolio
+# regret.info
 
-Static site + one serverless function for the flockopops chat (Groq).
+Personal site of Julien: web and desktop developer, first-year student at Epitech Paris.
+Static HTML, CSS and JavaScript. No framework, no build step.
 
-## Files
-- `index.html` — the site (styles and scripts inlined, no build step)
-- `assets/img/` — photos, avatar and the social preview image (`preview.png`, 1200×630)
-- `404.html` — custom not-found page (follows the saved theme and language)
-- `api/chat.js` — serverless proxy that talks to Groq (keeps the API key secret)
-- `vercel.json` — security headers (CSP, HSTS, anti-clickjacking, etc.) + asset caching
-- `favicon.svg`, `robots.txt`, `sitemap.xml` — icon and SEO basics
+## Structure
+
+```
+index.html            page content (English) + all CSS, inlined for a fast first paint
+404.html              not-found page (follows the saved theme and language)
+assets/js/site.js     behaviour + French translation (one file, commented by section)
+assets/fonts/         IBM Plex, official IBM split files (SIL OFL 1.1, see OFL.txt)
+assets/img/           photos (WebP + JPEG fallback), avatars, social preview (preview.png, 1200×630)
+api/chat.js           optional Groq proxy for the assistant (Vercel only)
+favicon.svg/.ico, apple-touch-icon.png, robots.txt, sitemap.xml, .well-known/security.txt
+CNAME, .nojekyll      GitHub Pages (custom domain, serve dot-folders as is)
+vercel.json           HTTP headers if the site is ever deployed on Vercel
+```
+
+## Editing content
+
+- **English** is written directly in `index.html`. **French** lives in `assets/js/site.js`, in the `T.fr` object.
+  Each translatable element carries a key: `data-i18n="key"` (text), `data-i18n-html` (text with links),
+  `data-i18n-aria`, `-alt`, `-ph`, `-href` (attributes). Add the key in both places.
+- French typography: `\u00a0` before `:` and `\u202f` before `;`, `?`, `!`. The French copy addresses
+  the reader as *vous*.
+- **Projects / skills / background** are plain lists in `index.html` (`.prow` and `.xp-row` blocks).
+- **CV**: the links open an email. To host a PDF instead, add `cv.pdf` at the root and point the two
+  `data-i18n="cv"` / `cta_cv` links to `/cv.pdf` (remove their `data-i18n-href`).
+- **Images**: add the JPEG and a WebP next to it (`<picture>` serves WebP, JPEG is the fallback).
+  For example with https://squoosh.app or `cwebp -q 80 photo.jpg -o photo.webp`.
+- **Social preview**: `assets/img/preview.png` is what Discord, LinkedIn, etc. show. Regenerate it if
+  the headline changes.
+- Update `<lastmod>` in `sitemap.xml` after a significant change.
 
 ## Features
-- EN / FR switch (auto-detects the browser language, remembered across visits)
-- Dark / light theme (follows the OS until the visitor picks one, remembered, no flash on load)
-- Live GitHub contributions graph, live Discord presence (Lanyard), view counter
-- flockopops chat: Groq when `/api/chat` is available, scripted answers otherwise
-- Accessible: skip link, visible keyboard focus, WCAG AA text contrast, reduced-motion support
-- SEO: canonical URL, Open Graph / Twitter cards, JSON-LD `Person`, sitemap
 
-## Editing tips
-- **Images**: drop files in `assets/img/` and reference them by path. They're cached for 30 days on Vercel,
-  so give a replaced image a new file name if it must update immediately.
-- **CV**: the "Ask for my CV" link opens an email. To host the PDF instead, add `cv.pdf` at the root and
-  point that link (Experience section) to `/cv.pdf`.
-- **Domain**: `regret.info` is hard-coded in the `<head>` meta tags, `robots.txt` and `sitemap.xml`.
+- EN / FR (browser language by default, remembered; the French page is never shown in English first).
+- Light / dark theme (follows the OS until the visitor picks one, remembered, no flash).
+- WaveDeck mixer mock-up: faders, pan knobs, mute/solo, keyboard accessible.
+- GitHub contributions graph (live, with a snapshot fallback), Discord status (Lanyard, status only),
+  local time in Paris.
+- Assistant "flockopops": scripted answers, or Groq through `api/chat.js` on Vercel. It always states
+  that it is automated. Set `chat: false` in `CONFIG` (top of `site.js`) to remove it.
+- Visit counter: one anonymous hit per session on regret.info, **never displayed**. Read the total at
+  `https://abacus.jasoncameron.dev/get/julien-roullet-portfolio/views`.
+- Print / "Save as PDF" gives a clean, CV-like document (navigation, mock-up and photos hidden).
+- Accessibility: skip link, visible focus, WCAG AA contrast in both themes, reduced-motion support,
+  proper headings and labels.
+- SEO: canonical URL, Open Graph / Twitter cards, JSON-LD `Person`, sitemap.
 
-## Deploy on Vercel (free)
-1. Push these files to a GitHub repo (keep the `api/` folder at the root).
-2. Import the repo on vercel.com → Deploy.
-3. In **Project → Settings → Environment Variables**, add:
-   - `GROQ_API_KEY` = your free key from https://console.groq.com  (**required**)
-   - `ALLOWED_ORIGIN` = your final URL(s), e.g. `https://regret.info` (comma-separated for several). Exact match.
-     If unset, the endpoint only accepts calls coming from its own host.
-   - `GROQ_MODEL` = `llama-3.3-70b-versatile` (optional; `llama-3.1-8b-instant` is faster/lighter)
-4. Redeploy. The chat now uses Groq; if the key is missing or the API fails, it automatically falls back to the built-in scripted answers.
+## Hosting
 
-> **GitHub Pages** (the `CNAME` file) serves the static site only: `api/chat.js` and the headers in
-> `vercel.json` are ignored there, and the chat automatically uses its scripted answers.
+### GitHub Pages (current)
+Push to the repository; `CNAME` keeps the custom domain. GitHub Pages cannot send custom HTTP headers,
+so the **Content-Security-Policy is set with a `<meta>` tag** in `index.html` and `404.html`.
+`api/chat.js` and `vercel.json` are ignored there, and the assistant uses its scripted answers.
 
-## Security notes (what's protected, honestly)
-- **API key**: lives only in the Vercel env var, never in the browser. Safe.
-- **Injection / XSS**: strict `Content-Security-Policy` + all chat replies rendered as text (escaped), never as HTML.
-- **Clickjacking**: `X-Frame-Options: DENY` + `frame-ancestors 'none'`.
-- **Abuse / quota burn**: input capped at 500 chars (history at 6 messages), `max_tokens` capped, per-IP rate limit (15/min), exact origin lock, JSON-only, 10s timeout.
-- **HTTPS enforced**: HSTS.
-- **Front-end code is public by design** — browsers must download HTML/CSS/JS to render it, so it can't be "hidden". Only *secrets* can be protected (and they are, server-side). Minifying only makes copying less convenient.
-- **Real DDoS / WAF / bot protection** isn't something a static site can do alone. For that, put the domain behind **Cloudflare (free)**: proxy the DNS, turn on "Under Attack" mode when needed, and add a rate-limiting rule. That's the strongest free layer.
+### Vercel (optional, enables the Groq assistant)
+1. Import the repository on vercel.com and deploy.
+2. Project → Settings → Environment Variables:
+   - `GROQ_API_KEY` (required), from https://console.groq.com
+   - `ALLOWED_ORIGIN` = `https://regret.info` (exact match; comma-separated for several)
+   - `GROQ_MODEL` (optional, default `llama-3.3-70b-versatile`)
+3. In `assets/js/site.js`, set `chatApi: '/api/chat'` in `CONFIG`, then redeploy.
 
-## Harden the rate limit further (optional)
-The in-memory limiter resets on cold starts. For a strict per-IP limit, create a free **Upstash Redis** DB and store hit counts there instead of the in-memory `Map`.
+## Content-Security-Policy and the inline scripts
+
+Each page has one small inline script (theme and language before first paint), allowed by its
+SHA-256 hash in the CSP. **If you edit one of these scripts, its hash must be updated**, otherwise the
+browser blocks it (the site still works thanks to the fallback in `site.js`, but the theme may flash).
+
+Get the new hash, then paste it in the page's CSP `<meta>` (and in `vercel.json` if you use Vercel):
+
+```sh
+python3 -c "import re,hashlib,base64,sys;[print(\"'sha256-\"+base64.b64encode(hashlib.sha256(m.encode()).digest()).decode()+\"'\") for m in re.findall(r'<script>(.*?)</script>',open(sys.argv[1],encoding='utf-8').read(),re.S)]" index.html
+```
+
+Chrome's console also prints the expected hash when a script is blocked.
+
+## Security, honestly
+
+- No secret in the front end. The Groq key (if used) stays in a Vercel environment variable.
+- XSS: strict CSP (no `unsafe-inline` for scripts, no third-party scripts), assistant replies rendered
+  as text, never as HTML.
+- No third-party requests on load except the three read-only APIs listed in the CSP `connect-src`.
+  Fonts are self-hosted (no Google Fonts call).
+- Clickjacking protection (`frame-ancestors`) only works as an HTTP header, so only on Vercel.
+- The front-end code is public by design; only secrets can be protected, and there are none here.
+- For DDoS or bot protection, put the domain behind Cloudflare (free plan).
