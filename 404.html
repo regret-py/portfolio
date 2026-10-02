@@ -17,25 +17,28 @@
 @font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url(/assets/fonts/IBMPlexMono-Regular-Pi.woff2) format("woff2");unicode-range:U+2000-200D,U+202F,U+2190-2199}
 @font-face{font-family:"IBM Plex Serif";font-weight:400;font-display:swap;src:url(/assets/fonts/IBMPlexSerif-Regular-Latin1.woff2) format("woff2");unicode-range:U+0000,U+000D,U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2013-2014,U+2018-201A,U+201C-201E,U+2020-2022,U+2026,U+2030,U+2039-203A,U+2044,U+20AC,U+2122,U+2212,U+FB01-FB02}
 @font-face{font-family:"IBM Plex Sans";font-weight:400;font-display:swap;src:url(/assets/fonts/IBMPlexSans-Regular-Latin1.woff2) format("woff2");unicode-range:U+0000,U+000D,U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2013-2014,U+2018-201A,U+201C-201E,U+2020-2022,U+2026,U+2030,U+2039-203A,U+2044,U+20AC,U+2122,U+2212,U+FB01-FB02}
-:root{--bg:#f2efe9;--text:#171512;--muted:#524d46;--dim:#6b655c;--rule:rgba(23,21,18,.13);--mark:#ff5a1f;--accent:#b53c0a;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141311;--text:#ebe7de;--muted:#b0a99d;--dim:#8f887c;--rule:rgba(235,231,222,.12);--accent:#ff8350;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#141311;--text:#ebe7de;--muted:#b0a99d;--dim:#8f887c;--rule:rgba(235,231,222,.12);--accent:#ff8350;color-scheme:dark}
+:root{--bg:#f2efe9;--text:#171512;--muted:#524d46;--dim:#6b655c;--rule:rgba(23,21,18,.13);--mark:#ff5a1f;--accent:#b53c0a;--grain-k:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.1 .62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.2'/%3E%3C/svg%3E");--grain-w:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -1.1 .62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.14'/%3E%3C/svg%3E");--grain:var(--grain-k);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141311;--text:#ebe7de;--muted:#b0a99d;--dim:#8f887c;--rule:rgba(235,231,222,.12);--accent:#ff8350;--grain:var(--grain-w);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141311;--text:#ebe7de;--muted:#b0a99d;--dim:#8f887c;--rule:rgba(235,231,222,.12);--accent:#ff8350;--grain:var(--grain-w);color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;display:grid;place-items:center;padding:24px;background:var(--bg);color:var(--text);font-family:"IBM Plex Mono",ui-monospace,monospace;-webkit-font-smoothing:antialiased}
-.wrap{width:min(540px,100%);padding-top:22px;border-top:1px solid var(--rule)}
+body{margin:0;display:grid;place-items:center;padding:24px;background:var(--bg) var(--grain);color:var(--text);font-family:"IBM Plex Mono",ui-monospace,monospace;-webkit-font-smoothing:antialiased}
+.wrap{width:min(560px,100%);padding-top:22px;border-top:1px solid var(--rule)}
+.big{margin:0 0 18px;font:400 clamp(110px,26vw,190px)/.9 "IBM Plex Serif",Georgia,serif;letter-spacing:-.05em;-webkit-user-select:none;user-select:none}
+.big i{display:inline-block;width:.12em;height:.12em;margin-left:.06em;background:var(--mark)}
 .code{display:flex;align-items:center;gap:10px;margin:0 0 18px;font:400 13px "IBM Plex Mono",ui-monospace,monospace;color:var(--dim)}
 .code::before{content:"";width:8px;height:8px;background:var(--mark)}
 h1{margin:0 0 14px;font:400 clamp(30px,6vw,42px)/1.15 "IBM Plex Serif",Georgia,serif;text-wrap:balance}
 p{margin:0 0 26px;color:var(--muted);font:400 16px/1.6 "IBM Plex Sans",system-ui,sans-serif}
-a{color:var(--text);font-size:14px;text-underline-offset:4px}
-a:hover{color:var(--accent)}
+a{color:var(--text);font-size:14px;text-decoration-color:var(--rule);text-underline-offset:4px;transition:color .2s,text-decoration-color .2s}
+a:hover{color:var(--accent);text-decoration-color:currentColor}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 </style>
 </head>
 <body>
   <main class="wrap">
     <p class="code" id="c">error 404</p>
+    <p class="big" aria-hidden="true">404<i></i></p>
     <h1 id="t">This page does not exist.</h1>
     <p id="d">The link may be incorrect, or the page has moved.</p>
     <a href="/" id="b">← Back to the homepage</a>
