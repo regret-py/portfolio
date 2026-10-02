@@ -198,8 +198,8 @@ h1 em{font-style:italic;color:var(--accent)}
 .plate{position:relative;display:grid;justify-content:center;padding:28px;background:var(--bg-2)}
 .plate::before{content:"";position:absolute;inset:-9px;pointer-events:none;--c:var(--rule-2);background:linear-gradient(var(--c),var(--c)) 0 0/14px 1px,linear-gradient(var(--c),var(--c)) 0 0/1px 14px,linear-gradient(var(--c),var(--c)) 100% 0/14px 1px,linear-gradient(var(--c),var(--c)) 100% 0/1px 14px,linear-gradient(var(--c),var(--c)) 0 100%/14px 1px,linear-gradient(var(--c),var(--c)) 0 100%/1px 14px,linear-gradient(var(--c),var(--c)) 100% 100%/14px 1px,linear-gradient(var(--c),var(--c)) 100% 100%/1px 14px;background-repeat:no-repeat}
 
-/* mixer: a hardware unit, dark in both themes */
-.mixer{display:flex;flex-direction:column;gap:13px;padding:14px 16px 15px;border-radius:6px;background:#15171b;border:1px solid #000;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 1px 0 rgba(0,0,0,.2),0 22px 44px -22px rgba(0,0,0,.55)}
+/* mixer: a hardware unit, dark in both themes (focus rings use the on-dark blues) */
+.mixer{--accent:#86a8ff;--mark:#5592ff;display:flex;flex-direction:column;gap:13px;padding:14px 16px 15px;border-radius:6px;background:#15171b;border:1px solid #000;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 1px 0 rgba(0,0,0,.2),0 22px 44px -22px rgba(0,0,0,.55)}
 .mx-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:11px;border-bottom:1px solid rgba(255,255,255,.08)}
 .mx-brand{display:flex;align-items:center;gap:7px;font:400 10px var(--mono);letter-spacing:.14em;color:#c2c7ce}
 .mx-dot{width:7px;height:7px;border-radius:50%;background:#39d353;box-shadow:0 0 6px rgba(57,211,83,.6)}
@@ -324,6 +324,7 @@ footer{padding:0 0 92px;font:400 12.5px var(--mono);color:var(--dim)}
 .fc-fab{position:fixed;right:20px;bottom:20px;z-index:80;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px 0 12px;border:1px solid var(--rule-2);border-radius:3px;background:var(--bg);color:var(--text);font:500 13px var(--mono);cursor:pointer;box-shadow:0 10px 28px -14px rgba(0,0,0,.5);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .25s,transform .25s var(--ease),border-color .2s}
 .fc-fab.show{opacity:1;transform:none;pointer-events:auto}
 .fc-fab:hover{border-color:var(--text);transform:translateY(-2px)}
+.fc-fab:focus-visible{outline-offset:-5px}
 .fc-fab[hidden],.fc-fab.hide,.fc-panel[hidden]{display:none}
 .fc-panel{position:fixed;right:20px;bottom:20px;z-index:81;display:flex;flex-direction:column;width:min(380px,calc(100vw - 32px));height:min(540px,calc(100vh - 40px));background:var(--bg);border:1px solid var(--rule-2);border-radius:4px;overflow:hidden;box-shadow:0 24px 60px -24px rgba(0,0,0,.5)}
 @media (prefers-reduced-motion:no-preference){.fc-panel{animation:rise .35s var(--ease)}}
@@ -345,6 +346,7 @@ footer{padding:0 0 92px;font:400 12.5px var(--mono);color:var(--dim)}
 .fc-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--rule)}
 .fc-input input{flex:1;min-width:0;padding:9px 10px;background:transparent;border:1px solid var(--rule-2);border-radius:3px;color:var(--text);font:400 14px var(--sans);outline:none;transition:border-color .2s}
 .fc-input input:focus{border-color:var(--text)}
+.fc-input input::placeholder{color:var(--dim);opacity:1}
 .fc-input button{padding:0 13px;background:var(--text);border:0;border-radius:3px;color:var(--bg);font:500 13px var(--mono);cursor:pointer;transition:background-color .2s,color .2s}
 .fc-input button:hover:not(:disabled){background:var(--accent);color:var(--on-accent)}
 .fc-input button:disabled{opacity:.5;cursor:default}
