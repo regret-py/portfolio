@@ -172,7 +172,7 @@
   var themeBtn = $('themeBtn');
   function paintTheme(t) {
     root.setAttribute('data-theme', t);
-    if (metaTheme) metaTheme.content = t === 'dark' ? '#141311' : '#f2efe9';
+    if (metaTheme) metaTheme.content = t === 'dark' ? '#0a0e1b' : '#e8edf1';
     if (themeBtn) themeBtn.setAttribute('aria-label', t === 'dark' ? s('theme_to_light') : s('theme_to_dark'));
   }
   if (themeBtn) themeBtn.addEventListener('click', function () {

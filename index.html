@@ -9,7 +9,7 @@
 <meta name="description" content="Julien, web and desktop developer based in Paris. First-year student at Epitech, building WaveDeck, a virtual audio mixer for Windows. Co-owner of mush.rip.">
 <meta name="author" content="Julien">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f2efe9">
+<meta name="theme-color" content="#e8edf1">
 <!-- Sets theme + language before first paint. If you edit this script, update its sha256 in the CSP above (see README). -->
 <script>(function(d){var r=d.documentElement,t,l;try{t=localStorage.getItem("theme");l=localStorage.getItem("lang")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(l!=="fr"&&l!=="en")l=/^fr\b/i.test(navigator.language||"")?"fr":"en";r.setAttribute("data-theme",t);r.lang=l;r.classList.add("js");if(l==="fr")r.classList.add("i18n-wait")})(document)</script>
 <link rel="canonical" href="https://regret.info/">
@@ -56,13 +56,13 @@
 
 /* ---------- tokens ---------- */
 :root{
-  --bg:#f2efe9; --bg-2:#e8e3d9; --text:#171512; --muted:#524d46; --dim:#6b655c;
-  --rule:rgba(23,21,18,.13); --rule-2:rgba(23,21,18,.3);
-  --accent:#b53c0a; --on-accent:#fff; --mark:#ff5a1f;
+  --bg:#e8edf1; --bg-2:#d8e0e7; --text:#121a2f; --muted:#3f4a62; --dim:#535e78;
+  --rule:rgba(18,26,47,.13); --rule-2:rgba(18,26,47,.3);
+  --accent:#1e38b4; --on-accent:#fff; --mark:#1f5bff; --on-mark:#fff;
   /* paper grain: one 220px noise tile, dark specks on paper, light specks on ink */
   --grain-k:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.1 .62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.2'/%3E%3C/svg%3E");
   --grain-w:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -1.1 .62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.14'/%3E%3C/svg%3E");
-  --grain:var(--grain-k); --band:#171512;
+  --grain:var(--grain-k); --band:#14204a;
   --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
@@ -72,15 +72,15 @@
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#141311; --bg-2:#1e1c19; --text:#ebe7de; --muted:#b0a99d; --dim:#8f887c;
-    --rule:rgba(235,231,222,.12); --rule-2:rgba(235,231,222,.28);
-    --accent:#ff8350; --on-accent:#141311; --grain:var(--grain-w); --band:#0c0b0a; color-scheme:dark;
+    --bg:#0a0e1b; --bg-2:#141a2c; --text:#e3e8f2; --muted:#a3adc4; --dim:#808ba6;
+    --rule:rgba(227,232,242,.12); --rule-2:rgba(227,232,242,.28);
+    --accent:#729cff; --on-accent:#0a0e1b; --mark:#3f80ff; --on-mark:#0a0e1b; --grain:var(--grain-w); --band:#04060f; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#141311; --bg-2:#1e1c19; --text:#ebe7de; --muted:#b0a99d; --dim:#8f887c;
-  --rule:rgba(235,231,222,.12); --rule-2:rgba(235,231,222,.28);
-  --accent:#ff8350; --on-accent:#141311; --grain:var(--grain-w); --band:#0c0b0a; color-scheme:dark;
+  --bg:#0a0e1b; --bg-2:#141a2c; --text:#e3e8f2; --muted:#a3adc4; --dim:#808ba6;
+  --rule:rgba(227,232,242,.12); --rule-2:rgba(227,232,242,.28);
+  --accent:#729cff; --on-accent:#0a0e1b; --mark:#3f80ff; --on-mark:#0a0e1b; --grain:var(--grain-w); --band:#04060f; color-scheme:dark;
 }
 
 /* ---------- base ---------- */
@@ -96,7 +96,7 @@ p,h1,h2,h3,figure,dl,dd{margin:0}
 h1,h2,h3{text-wrap:balance}
 p,dd{text-wrap:pretty}
 sup{font-size:.68em;line-height:0;vertical-align:.42em}
-::selection{background:var(--mark);color:#fff}
+::selection{background:var(--mark);color:var(--on-mark)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
 .num{font-variant-numeric:tabular-nums}
@@ -257,7 +257,7 @@ h1 em{font-style:italic;color:var(--accent)}
 .xp-row dt{padding-top:3px;font:400 13px/1.5 var(--mono);color:var(--dim)}
 .xp-row dd b{font-weight:600}
 .xp-row dd span{display:block;color:var(--muted);font-size:15.5px}
-/* background: a small marker per entry, orange while it is still going on */
+/* background: a small marker per entry, filled with the signal colour while it is still going on */
 .xp--time dd{position:relative;padding-left:22px}
 .xp--time dd::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border:1px solid var(--rule-2)}
 .xp--time .cur dd::before{border-color:var(--mark);background:var(--mark)}
@@ -291,10 +291,9 @@ h1 em{font-style:italic;color:var(--accent)}
 .photos figcaption{margin-top:10px;font:400 12px var(--mono);color:var(--dim)}
 
 /* ---------- ink band: contact + footer, dark in both themes ---------- */
-.band{--bg:var(--band); --bg-2:#25221e; --text:#efebe3; --muted:#bdb6aa; --dim:#9b9488;
-  --rule:rgba(239,235,227,.13); --rule-2:rgba(239,235,227,.3); --accent:#ff8350; --on-accent:#171512;
-  --grain:var(--grain-w); background:var(--bg) var(--grain); color:var(--text); color-scheme:dark}
-.band ::selection{color:#171512}
+.band{--bg:var(--band); --bg-2:#1b2753; --text:#e6ebf5; --muted:#a9b2c8; --dim:#8e9aba;
+  --rule:rgba(230,235,245,.13); --rule-2:rgba(230,235,245,.3); --accent:#86a8ff; --on-accent:#0b1020;
+  --mark:#5592ff; --on-mark:#0b1020; --grain:var(--grain-w); background:var(--bg) var(--grain); color:var(--text); color-scheme:dark}
 .band .sec{padding:92px 0 84px;border-top:0}
 
 /* contact */
@@ -413,7 +412,7 @@ footer{padding:0 0 92px;font:400 12.5px var(--mono);color:var(--dim)}
 
 /* ---------- print: a clean, CV-like copy ---------- */
 @media print{
-  :root,:root[data-theme],.band{--bg:#fff;--bg-2:#f2f2f2;--text:#000;--muted:#333;--dim:#555;--rule:#d0d0d0;--rule-2:#999;--accent:#000;--mark:#000;--grain:none;color-scheme:light}
+  :root,:root[data-theme],.band{--bg:#fff;--bg-2:#f2f2f2;--text:#000;--muted:#333;--dim:#555;--rule:#d0d0d0;--rule-2:#999;--accent:#000;--mark:#000;--on-mark:#fff;--grain:none;color-scheme:light}
   @page{margin:14mm 14mm}
   body{font-size:9.5pt;line-height:1.45;background:#fff}
   .nav,.skip,.fc-fab,.fc-panel,.copy,.fig,.gh,#off,.wd-more,.avail::before,#clock,.totop,.mast,.wordmark,.avatar-wrap{display:none!important}
@@ -579,7 +578,7 @@ footer{padding:0 0 92px;font:400 12.5px var(--mono);color:var(--dim)}
   <section class="sec" id="projects" aria-labelledby="h-proj">
     <h2 class="sec-h" id="h-proj"><span class="n">01</span><span data-i18n="nav_projects">projects</span></h2>
     <ul class="plist">
-      <li class="prow" style="--c:#e0432a">
+      <li class="prow" style="--c:#dc3f28">
         <div class="phead">
           <h3 class="pname"><a href="https://mush.rip" target="_blank" rel="noopener">mush.rip<span class="ext" aria-hidden="true">↗</span></a></h3>
           <p class="meta" data-i18n="mush_meta">co-owner&nbsp;· since&nbsp;2025</p>
@@ -588,7 +587,7 @@ footer{padding:0 0 92px;font:400 12.5px var(--mono);color:var(--dim)}
           <p data-i18n="mush_desc">Link-in-bio platform: one page that brings together a person’s links, social profiles and statistics. A small team builds it; as co-owner, I handle product and operations.</p>
         </div>
       </li>
-      <li class="prow" style="--c:#2f9e8f">
+      <li class="prow" style="--c:#178a92">
         <div class="phead">
           <h3 class="pname">Flockocord</h3>
           <p class="meta" data-i18n="side">personal project</p>
@@ -598,7 +597,7 @@ footer{padding:0 0 92px;font:400 12.5px var(--mono);color:var(--dim)}
           <p class="stack">node.js&nbsp;· express&nbsp;· websocket&nbsp;· sqlite&nbsp;· jwt</p>
         </div>
       </li>
-      <li class="prow" style="--c:#e8743b">
+      <li class="prow" style="--c:#de6e22">
         <div class="phead">
           <h3 class="pname">Wingman</h3>
           <p class="meta" data-i18n="community">community&nbsp;· Discord bot</p>
