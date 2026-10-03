@@ -89,7 +89,7 @@
     copy: 'copier', copied: 'copié',
     ct_based: 'basé à', ct_city: 'Paris, France',
     src: 'code source ↗', totop: 'haut de page ↑',
-    colophon: 'Composé en IBM Plex. Écrit à la main, sans framework.',
+    colophon: '1337.',
     fc_open: 'Une question\u202f?', fc_close: 'Fermer',
     fc_sub: 'assistant automatisé',
     fc_note: 'Réponses automatiques, parfois incomplètes.',
@@ -172,7 +172,7 @@
   var themeBtn = $('themeBtn');
   function paintTheme(t) {
     root.setAttribute('data-theme', t);
-    if (metaTheme) metaTheme.content = t === 'dark' ? '#0a0e1b' : '#e8edf1';
+    if (metaTheme) metaTheme.content = t === 'dark' ? '#000000' : '#ffffff';
     if (themeBtn) themeBtn.setAttribute('aria-label', t === 'dark' ? s('theme_to_light') : s('theme_to_dark'));
   }
   if (themeBtn) themeBtn.addEventListener('click', function () {
@@ -359,7 +359,7 @@
   (function () {
     var grid = $('ghGrid'), months = $('ghMonths'), countEl = $('ghCount'), recentEl = $('ghRecent');
     if (!grid || !months) return;
-    var inks = ['var(--rule)', 'color-mix(in srgb,var(--text) 28%,transparent)', 'color-mix(in srgb,var(--text) 50%,transparent)', 'color-mix(in srgb,var(--text) 74%,transparent)', 'var(--text)'];
+    var inks = ['var(--rule)', 'color-mix(in srgb,var(--red) 30%,transparent)', 'color-mix(in srgb,var(--red) 55%,transparent)', 'color-mix(in srgb,var(--red) 78%,transparent)', 'var(--red)'];
     var current = null;
     function fmt(n) { return Number(n || 0).toLocaleString(locale()); }
     function render(data) {
