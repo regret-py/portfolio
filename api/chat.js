@@ -84,6 +84,7 @@ About Julien (the only facts you may use):
 - Earlier projects, both now finished: mush.rip (co-owned from 2025; a link-in-bio platform, one page for a person's links, social profiles and statistics; a small team built it, Julien handled product and operations, he did not create it and was not one of its developers) and Wingman (Counter-Strike 2 community and its Discord bot: matchmaking, tournaments, anti-raid; discord.js, SQLite).
 - Skills: Python, JavaScript, Bash; HTML, CSS, React, technical SEO; Node.js, Express, WebSockets, JWT, SQLite, discord.js; PySide6 (Qt), sounddevice, Pedalboard, VST3; Git, GitHub, Linux, VS Code. He builds quickly with AI tools as a copilot.
 - Available for internships, freelance work and collaborations (web, desktop, audio). CV sent on request by email.
+- Donations: the page has a Stripe donation button in its "support" section. Payments are handled by Stripe, Julien never sees card details. Do not promise anything in return for a donation.
 - Interests: cars, skateboarding, catamaran sailing, Counter-Strike 2.
 - Contact: email julien.roullet@proton.me, Discord "starbadge", GitHub "regret-py".
 Rules:

@@ -5,7 +5,7 @@
  * 1. config & helpers      5. avatar reveal       9. Discord presence
  * 2. i18n (EN in the DOM)  6. WaveDeck mixer     10. visit counter (silent)
  * 3. theme                 7. GitHub graph       11. assistant (flockopops)
- * 4. nav                   8. contact
+ * 4. nav                   8. contact            12. donation button (Stripe, on demand)
  */
 (function () {
   'use strict';
@@ -87,6 +87,10 @@
     img_car: 'Un coupé sportif bleu en courbe sur un circuit', img_skate: 'Trois skateboards dans un train', img_sail: 'Un catamaran en mer, une coque levée',
     cap_car: 'fig. 2\u00a0: sur circuit', cap_skate: 'fig. 3\u00a0: skate', cap_sail: 'fig. 4\u00a0: catamaran',
     ct_p: 'Pour un stage, une mission freelance ou une question sur WaveDeck, le plus simple est de m’écrire par e-mail.',
+    sup_h: 'soutien',
+    sup_p: 'Si mon travail vous est utile, vous pouvez le soutenir par un don.',
+    sup_note: 'Paiement sécurisé par Stripe\u00a0: je ne vois jamais vos informations de carte.',
+    sup_fail: 'Le bouton de paiement n’a pas pu se charger. Vous pouvez <a class="u" href="mailto:julien.roullet@proton.me?subject=Don">m’écrire</a> à la place.',
     copy: 'copier', copied: 'copié',
     ct_based: 'basé à', ct_city: 'Paris, France',
     src: 'code source ↗', totop: 'haut de page ↑',
@@ -559,6 +563,9 @@
       { w: 2, k: ['cv', 'resume'],
         en: 'Julien sends his CV on request: <a href="mailto:' + CONFIG.email + '?subject=CV%20request">' + CONFIG.email + '</a>.',
         fr: 'Julien transmet son CV sur demande\u00a0: <a href="mailto:' + CONFIG.email + '?subject=Demande%20de%20CV">' + CONFIG.email + '</a>.' },
+      { w: 2, k: ['donate', 'donation', 'support', 'don', 'dons', 'soutenir', 'soutien', 'sponsor', 'stripe', 'pourboire'],
+        en: 'You can support Julien with a donation: there is a payment button in the “support” section of this page. Payments are handled by Stripe.',
+        fr: 'Vous pouvez soutenir Julien par un don\u00a0: un bouton de paiement se trouve dans la section «\u202fsoutien\u202f» de cette page. Les paiements sont gérés par Stripe.' },
       { k: ['contact', 'email', 'mail', 'reach', 'joindre', 'discord', 'atteindre', 'ecrire', 'hire', 'embauche', 'recrute', 'recruter', 'freelance', 'mission', 'stage', 'internship', 'job', 'dispo', 'disponible', 'available', 'availability'],
         en: 'You can reach Julien by email at ' + MAIL + ', on Discord (starbadge) or on GitHub (' + GH + '). He is open to internships, freelance work and collaborations.',
         fr: 'Vous pouvez joindre Julien par e-mail à ' + MAIL + ', sur Discord (starbadge) ou sur GitHub (' + GH + '). Il est ouvert aux stages, aux missions freelance et aux collaborations.' },
@@ -742,6 +749,28 @@
       ask(v);
     });
     onLang(function () { if (!panel.hidden) renderChips(); });
+  })();
+
+  /* ===================== 12. donation button (Stripe) ===================== */
+  // The button is Stripe's own web component, already in the HTML. Its script is only fetched when the
+  // section is about to scroll into view, so the page contacts Stripe on demand and never on load.
+  (function () {
+    var sec = $('support');
+    if (!sec || !sec.querySelector('stripe-buy-button')) return;
+    var fail = sec.querySelector('.sup-fail'), started = false;
+    function load() {
+      if (started) return;
+      started = true;
+      var s = document.createElement('script');
+      s.src = 'https://js.stripe.com/v3/buy-button.js';
+      s.async = true;
+      s.onerror = function () { if (fail) fail.hidden = false; }; // blocked or offline: point to the e-mail instead
+      document.head.appendChild(s);
+    }
+    if (hasIO) {
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); load(); } }, { rootMargin: '600px 0px' });
+      io.observe(sec);
+    } else load();
   })();
 
   /* ===================== go ===================== */
