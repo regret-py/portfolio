@@ -9,7 +9,7 @@ Static HTML, CSS and JavaScript. No framework, no build step.
 index.html            page content (English) + all CSS, inlined for a fast first paint
 404.html              not-found page (follows the saved theme and language)
 assets/js/site.js     behaviour + French translation (one file, commented by section)
-assets/fonts/         IBM Plex, official IBM split files (SIL OFL 1.1, see OFL.txt)
+assets/fonts/         Jost Italic (variable, Latin subset), SIL OFL 1.1, see OFL.txt
 assets/img/           photos (WebP + JPEG fallback), avatars, social preview (preview.png, 1200×630)
 api/chat.js           optional Groq proxy for the assistant (Vercel only)
 favicon.svg/.ico, apple-touch-icon.png, robots.txt, sitemap.xml, .well-known/security.txt
@@ -25,13 +25,28 @@ vercel.json           HTTP headers if the site is ever deployed on Vercel
 - French typography: `\u00a0` before `:` and `\u202f` before `;`, `?`, `!`. The French copy addresses
   the reader as *vous*.
 - **Projects / skills / background** are plain lists in `index.html` (`.prow` and `.xp-row` blocks).
+  Each project tile picks its colourway with a class: `t-red`, `t-ink` or `t-paper`; add `lnk` when the tile links out.
 - **CV**: the links open an email. To host a PDF instead, add `cv.pdf` at the root and point the two
   `data-i18n="cv"` / `cta_cv` links to `/cv.pdf` (remove their `data-i18n-href`).
 - **Images**: add the JPEG and a WebP next to it (`<picture>` serves WebP, JPEG is the fallback).
   For example with https://squoosh.app or `cwebp -q 80 photo.jpg -o photo.webp`.
 - **Social preview**: `assets/img/preview.png` is what Discord, LinkedIn, etc. show. Regenerate it if
-  the headline changes.
+  the headline changes. `favicon.svg` is the white J from Jost on red; `favicon.ico` and `apple-touch-icon.png`
+  are renders of it.
 - Update `<lastmod>` in `sitemap.xml` after a significant change.
+
+## Look and feel
+
+Streetwear-shop inspired: white, black and one signal red, hard edges, no shadows, small uppercase labels.
+
+- **Type**: the system Helvetica (Helvetica Neue, then Arial) for text; Jost Italic, a free Futura-style face,
+  for the logo box and the display headings. Jost is the only web font, loaded once.
+- **Red box**: `.box` (white italic on red) is the logo in the navigation and the footer. The highlighted
+  phrase in the headline (`h1 em`) is the same box, following the line breaks.
+- **Tokens** are at the top of the `<style>` in `index.html` (and `404.html`). Change `--mark` to re-colour the
+  whole site; `--accent` is the variant used for red *text* (it is lighter in the dark theme to keep contrast).
+- The contact block (red) and the footer (black) look the same in both themes.
+- The strip under the introduction is decorative (`aria-hidden`) and stops with reduced motion.
 
 ## Features
 
@@ -46,7 +61,8 @@ vercel.json           HTTP headers if the site is ever deployed on Vercel
   `https://abacus.jasoncameron.dev/get/julien-roullet-portfolio/views`.
 - Print / "Save as PDF" gives a clean, CV-like document (navigation, mock-up and photos hidden).
 - Accessibility: skip link, visible focus, WCAG AA contrast in both themes, reduced-motion support,
-  proper headings and labels.
+  proper headings and labels. Uppercase headings and labels are done with CSS only (the HTML keeps the original case);
+  the e-mail address stays in lower case so it can be copied as is.
 - SEO: canonical URL, Open Graph / Twitter cards, JSON-LD `Person`, sitemap.
 
 ## Hosting
