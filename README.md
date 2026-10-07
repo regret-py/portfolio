@@ -58,10 +58,10 @@ Streetwear-shop inspired: white, black and one signal red, hard edges, no shadow
   local time in Paris.
 - Assistant "flockopops": scripted answers, or Groq through `api/chat.js` on Vercel. It always states
   that it is automated. Set `chat: false` in `CONFIG` (top of `site.js`) to remove it.
-- Donations: a Stripe Buy Button in the `support` section (`<stripe-buy-button>` in `index.html`). Its label,
-  amount and colours are set in the Stripe dashboard, not in the page. The button's script is only fetched
-  when the section is about to scroll into view (end of `site.js`), and if it cannot load the visitor is
-  pointed to the e-mail address instead.
+- Donations: a button in the `support` section that links to a Stripe Payment Link (`https://buy.stripe.com/…`).
+  The amount and the payment page are set in the Stripe dashboard. It is a plain link: nothing from Stripe is
+  loaded on the page, and Stripe is only contacted if the visitor clicks. To change the link, edit the `href`
+  of `.btn--mark` in `index.html`.
 - Visit counter: one anonymous hit per session on regret.info, **never displayed**. Read the total at
   `https://abacus.jasoncameron.dev/get/julien-roullet-portfolio/views`.
 - Print / "Save as PDF" gives a clean, CV-like document (navigation, mock-up and photos hidden).
@@ -101,16 +101,14 @@ Chrome's console also prints the expected hash when a script is blocked.
 
 ## Security, honestly
 
-- No secret in the front end. The Groq key (if used) stays in a Vercel environment variable. The Stripe
-  `pk_live_…` key in the page is a *publishable* key: public by design, it can only start a payment. The
-  secret `sk_live_…` key never goes in this repository.
-- XSS: strict CSP (no `unsafe-inline` for scripts; the only third-party script is Stripe's button, from
-  `js.stripe.com`), assistant replies rendered as text, never as HTML.
+- No secret in the front end. The Groq key (if used) stays in a Vercel environment variable. A Stripe Payment
+  Link is public by design (it can only open a payment page); never put a Stripe secret key (`sk_live_…`) in
+  this repository.
+- XSS: strict CSP (no `unsafe-inline` for scripts, no third-party scripts), assistant replies rendered
+  as text, never as HTML.
 - No third-party requests on load except the three read-only APIs listed in the CSP `connect-src`.
-  Fonts are self-hosted (no Google Fonts call). Stripe is only contacted once the visitor gets close to the
-  `support` section; Stripe may then set its own fraud-prevention cookies. The CSP allows `*.stripe.com` for
-  the button's iframe, requests and images: if Stripe changes what the button needs, adjust `script-src`,
-  `frame-src`, `connect-src` and `img-src` in `index.html` **and** `vercel.json`.
+  Fonts are self-hosted (no Google Fonts call). The donation button is a link, so Stripe only sees the visitor
+  after a click, and the CSP needs nothing for it.
 - Clickjacking protection (`frame-ancestors`) only works as an HTTP header, so only on Vercel.
 - The front-end code is public by design; only secrets can be protected, and there are none here.
 - For DDoS or bot protection, put the domain behind Cloudflare (free plan).

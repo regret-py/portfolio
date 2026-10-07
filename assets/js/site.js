@@ -5,7 +5,7 @@
  * 1. config & helpers      5. avatar reveal       9. Discord presence
  * 2. i18n (EN in the DOM)  6. WaveDeck mixer     10. visit counter (silent)
  * 3. theme                 7. GitHub graph       11. assistant (flockopops)
- * 4. nav                   8. contact            12. donation button (Stripe, on demand)
+ * 4. nav                   8. contact
  */
 (function () {
   'use strict';
@@ -90,7 +90,7 @@
     sup_h: 'soutien',
     sup_p: 'Si mon travail vous est utile, vous pouvez le soutenir par un don.',
     sup_note: 'Paiement sécurisé par Stripe\u00a0: je ne vois jamais vos informations de carte.',
-    sup_fail: 'Le bouton de paiement n’a pas pu se charger. Vous pouvez <a class="u" href="mailto:julien.roullet@proton.me?subject=Don">m’écrire</a> à la place.',
+    sup_btn: 'Faire un don',
     copy: 'copier', copied: 'copié',
     ct_based: 'basé à', ct_city: 'Paris, France',
     src: 'code source ↗', totop: 'haut de page ↑',
@@ -749,28 +749,6 @@
       ask(v);
     });
     onLang(function () { if (!panel.hidden) renderChips(); });
-  })();
-
-  /* ===================== 12. donation button (Stripe) ===================== */
-  // The button is Stripe's own web component, already in the HTML. Its script is only fetched when the
-  // section is about to scroll into view, so the page contacts Stripe on demand and never on load.
-  (function () {
-    var sec = $('support');
-    if (!sec || !sec.querySelector('stripe-buy-button')) return;
-    var fail = sec.querySelector('.sup-fail'), started = false;
-    function load() {
-      if (started) return;
-      started = true;
-      var s = document.createElement('script');
-      s.src = 'https://js.stripe.com/v3/buy-button.js';
-      s.async = true;
-      s.onerror = function () { if (fail) fail.hidden = false; }; // blocked or offline: point to the e-mail instead
-      document.head.appendChild(s);
-    }
-    if (hasIO) {
-      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); load(); } }, { rootMargin: '600px 0px' });
-      io.observe(sec);
-    } else load();
   })();
 
   /* ===================== go ===================== */

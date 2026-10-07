@@ -29,7 +29,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; form-action 'self'; img-src 'self' data: https://*.stripe.com; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-vpwFnruZ0Ph2kdsAgfS2eMYl62Y6UTLTqETLC7OAzMw=' 'sha256-oAFvM8afBf4IaYT08p9IkHXgJcQhJDCIne/Bclwk0/s=' https://js.stripe.com https://*.js.stripe.com; connect-src 'self' https://api.lanyard.rest https://github-contributions-api.jogruber.de https://abacus.jasoncameron.dev https://*.stripe.com; frame-src https://*.stripe.com; upgrade-insecure-requests"
+          "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-vpwFnruZ0Ph2kdsAgfS2eMYl62Y6UTLTqETLC7OAzMw=' 'sha256-oAFvM8afBf4IaYT08p9IkHXgJcQhJDCIne/Bclwk0/s='; connect-src 'self' https://api.lanyard.rest https://github-contributions-api.jogruber.de https://abacus.jasoncameron.dev; upgrade-insecure-requests"
         }
       ]
     },

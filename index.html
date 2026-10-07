@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data: https://*.stripe.com; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-vpwFnruZ0Ph2kdsAgfS2eMYl62Y6UTLTqETLC7OAzMw=' https://js.stripe.com https://*.js.stripe.com; connect-src 'self' https://api.lanyard.rest https://github-contributions-api.jogruber.de https://abacus.jasoncameron.dev https://*.stripe.com; frame-src https://*.stripe.com; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-vpwFnruZ0Ph2kdsAgfS2eMYl62Y6UTLTqETLC7OAzMw='; connect-src 'self' https://api.lanyard.rest https://github-contributions-api.jogruber.de https://abacus.jasoncameron.dev; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Julien · Web and desktop developer, Paris</title>
 <meta name="description" content="Julien, web and desktop developer based in Paris. First-year student at Epitech, building WaveDeck, a virtual audio mixer for Windows, and epistudent.fr, a student budget calculator.">
@@ -182,11 +182,13 @@ h1 em{padding:0 .16em 0 .1em;margin:0 -.02em;font-style:inherit;color:var(--on-m
 .wd-more{margin-top:24px;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase}
 .fig figcaption{max-width:44ch;margin-top:12px;font:700 11px/1.5 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);text-wrap:pretty}
 .plate{display:grid;justify-content:center;padding:32px;background:var(--bg-2);border:1px solid var(--line)}
-/* support: Stripe's button sits on a plate; its colours and label are set in the Stripe dashboard */
-.sup{display:grid;gap:22px;max-width:36em}
-.sup-box{justify-content:start;align-content:center;min-height:120px}
-.sup-box stripe-buy-button{display:block;max-width:100%}
-.sup-fail{font:400 14px/1.5 var(--sans);color:var(--muted)}
+/* support: one red button to a Stripe payment page (the amount is set in the Stripe dashboard) */
+.btn--mark{border-color:var(--mark);background:var(--mark);color:var(--on-mark)}
+.btn--mark:hover{border-color:var(--text);background:var(--text);color:var(--bg)}
+.btn--ext::after{content:"↗"}
+.btn--ext:hover::after{transform:translate(3px,-3px)}
+.sup{display:grid;gap:24px;justify-items:start;max-width:36em}
+.sup .btn{min-height:54px;padding:0 26px;font-size:13px}
 .sup-note{font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
 
 /* mixer: a hardware unit, black in both themes (focus rings are white) */
@@ -711,15 +713,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
     <h2 class="sec-h" id="h-sup"><span class="n">05</span><span data-i18n="sup_h">support</span></h2>
     <div class="sup">
       <p class="lede" data-i18n="sup_p">If my work is useful to you, you can support it with a donation.</p>
-      <div class="plate sup-box">
-        <!-- Stripe buy button. Its script is added by site.js when this section is about to scroll into view (hosts allowed in the CSP above). -->
-        <stripe-buy-button
-          buy-button-id="buy_btn_1UNvMeRpWSrigxuUQv0JQtO2"
-          publishable-key="pk_live_51U86myRpWSrigxuUCYqBg8S3MPnppcUvM1arNBHNJ4W4kLXPSrgfB9LHaj3wZXpgIMEnaRp8QfmG9oyyJEnrMo3N00Bkn6qqVv">
-        </stripe-buy-button>
-        <p class="sup-fail" hidden data-i18n-html="sup_fail">The payment button could not load. You can <a class="u" href="mailto:julien.roullet@proton.me?subject=Donation">email me</a> instead.</p>
-        <noscript><p class="sup-fail">The payment button needs JavaScript. You can <a class="u" href="mailto:julien.roullet@proton.me?subject=Donation">email me</a> instead.</p></noscript>
-      </div>
+      <div><a class="btn btn--mark btn--ext" href="https://buy.stripe.com/dRm7sNajH9ux3lf9zRcMM05" target="_blank" rel="noopener" data-i18n="sup_btn">Make a donation</a></div>
       <p class="sup-note" data-i18n="sup_note">Secure payment by Stripe: I never see your card details.</p>
     </div>
   </section>
