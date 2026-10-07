@@ -26,6 +26,7 @@ vercel.json           HTTP headers if the site is ever deployed on Vercel
   the reader as *vous*.
 - **Projects / skills / background** are plain lists in `index.html` (`.prow` and `.xp-row` blocks).
   Each project tile picks its colourway with a class: `t-red`, `t-ink` or `t-paper`; add `lnk` when the tile links out.
+  A finished project gets `done` (grey, no link) and a `<span class="tag" data-i18n="done">` label, like a "sold out" tag.
 - **CV**: the links open an email. To host a PDF instead, add `cv.pdf` at the root and point the two
   `data-i18n="cv"` / `cta_cv` links to `/cv.pdf` (remove their `data-i18n-href`).
 - **Images**: add the JPEG and a WebP next to it (`<picture>` serves WebP, JPEG is the fallback).

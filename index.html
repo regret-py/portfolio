@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-vpwFnruZ0Ph2kdsAgfS2eMYl62Y6UTLTqETLC7OAzMw='; connect-src 'self' https://api.lanyard.rest https://github-contributions-api.jogruber.de https://abacus.jasoncameron.dev; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Julien · Web and desktop developer, Paris</title>
-<meta name="description" content="Julien, web and desktop developer based in Paris. First-year student at Epitech, building WaveDeck, a virtual audio mixer for Windows. Co-owner of mush.rip.">
+<meta name="description" content="Julien, web and desktop developer based in Paris. First-year student at Epitech, building WaveDeck, a virtual audio mixer for Windows, and epistudent.fr, a student budget calculator.">
 <meta name="author" content="Julien">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff">
@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="Julien">
 <meta property="og:url" content="https://regret.info/">
 <meta property="og:title" content="Julien · Web and desktop developer, Paris">
-<meta property="og:description" content="Web and desktop applications. Building WaveDeck, a virtual audio mixer for Windows. Co-owner of mush.rip. Epitech Paris.">
+<meta property="og:description" content="Web and desktop applications. Building WaveDeck, a virtual audio mixer for Windows, and epistudent.fr, a student budget calculator. Epitech Paris.">
 <meta property="og:image" content="https://regret.info/assets/img/preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -32,7 +32,7 @@
 <meta property="profile:first_name" content="Julien">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Julien · Web and desktop developer, Paris">
-<meta name="twitter:description" content="Web and desktop applications. Building WaveDeck, a virtual audio mixer for Windows. Co-owner of mush.rip. Epitech Paris.">
+<meta name="twitter:description" content="Web and desktop applications. Building WaveDeck, a virtual audio mixer for Windows, and epistudent.fr, a student budget calculator. Epitech Paris.">
 <meta name="twitter:image" content="https://regret.info/assets/img/preview.png">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Julien","alternateName":"Regret","url":"https://regret.info/","image":"https://regret.info/assets/img/avatar.jpg","jobTitle":"Web and desktop developer","email":"mailto:julien.roullet@proton.me","address":{"@type":"PostalAddress","addressLocality":"Paris","addressCountry":"FR"},"affiliation":{"@type":"CollegeOrUniversity","name":"Epitech Paris","url":"https://www.epitech.eu/"},"knowsAbout":["Python","JavaScript","C","PySide6","Qt","Node.js","Express","React","WebSockets","SQLite","Audio software","VST3"],"sameAs":["https://github.com/regret-py","https://discord.com/users/173290719316934659"]}
@@ -222,19 +222,23 @@ h1 em{padding:0 .16em 0 .1em;margin:0 -.02em;font-style:inherit;color:var(--on-m
 @keyframes vu{0%{height:28%}22%{height:74%}44%{height:46%}66%{height:90%}88%{height:56%}100%{height:68%}}
 
 /* projects: product tiles, red / ink / paper */
-.plist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.plist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
 .prow{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--bg);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
 .prow.lnk:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--text)}
-.phead{display:flex;flex-direction:column-reverse;justify-content:space-between;gap:48px;min-height:228px;padding:16px;background:var(--tile-bg);color:var(--tile-fg)}
+.phead{display:flex;flex-direction:column-reverse;justify-content:space-between;gap:48px;min-height:210px;padding:16px;background:var(--tile-bg);color:var(--tile-fg)}
 .t-red{--tile-bg:var(--mark);--tile-fg:var(--on-mark)}
 .t-ink{--tile-bg:var(--text);--tile-fg:var(--bg)}
 .t-paper{--tile-bg:var(--bg-2);--tile-fg:var(--text)}
 .phead .meta{color:inherit}
-.pname{margin:0;font:italic 800 clamp(26px,2.8vw,36px)/.98 var(--logo);letter-spacing:-.02em;text-transform:uppercase;overflow-wrap:anywhere}
+.pname{margin:0;font:italic 800 clamp(26px,3.6vw,46px)/.98 var(--logo);letter-spacing:-.02em;text-transform:uppercase;overflow-wrap:anywhere}
 .pname a{text-decoration:none}
 .pname a::after{content:"";position:absolute;inset:0}
 .pname a:focus-visible{outline:0}
 .prow:has(.pname a:focus-visible){outline:3px solid var(--accent);outline-offset:3px}
+/* finished projects: grey tile, no link, a label like a "sold out" tag */
+.tag{position:absolute;top:12px;right:14px;padding:4px 8px;background:var(--text);color:var(--bg);font:700 10px/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.prow.done .phead{min-height:150px}
+.prow.done .pname{color:var(--dim)}
 .pname .ext{position:absolute;top:13px;right:16px;font:700 18px/1 var(--sans);transition:transform .25s var(--ease)}
 .prow.lnk:hover .ext{transform:translate(3px,-3px)}
 .pbody{display:flex;flex-direction:column;gap:12px;padding:16px 16px 18px}
@@ -373,7 +377,8 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
 @media (max-width:760px){
   .plist{grid-template-columns:minmax(0,1fr)}
   .phead{min-height:176px}
-  .pname{font-size:clamp(30px,8vw,40px)}
+  .prow.done .phead{min-height:120px}
+  .pname{font-size:clamp(26px,7.6vw,40px)}
 }
 @media (max-width:640px){
   .wrap{padding-left:18px;padding-right:18px}
@@ -453,6 +458,8 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   .prow{display:grid;grid-template-columns:150px minmax(0,1fr);gap:0 12pt;padding:6pt 0;border:0;border-top:1px solid var(--rule);break-inside:avoid;transform:none!important;box-shadow:none!important}
   .phead{display:block;min-height:0;padding:0;background:none;color:#000}
   .pbody{padding:0}
+  .tag{position:static;display:inline-block;margin-top:2pt;padding:0 4pt;background:none;color:#000;border:1px solid #000;font-size:7pt}
+  .prow.done .pname{color:#000}
   .pname{font-size:10.5pt}
   .pname a::after{content:" (" attr(href) ")";position:static;font:400 7.5pt var(--sans);letter-spacing:0;text-transform:none;color:#555}
   .meta,.stack,.xp-row dt{font-size:8pt}
@@ -518,7 +525,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
 
       <div class="hero-main">
         <h1 id="h-hero" class="rise" style="--d:2" data-i18n-html="hero_h">I build web and desktop applications. <span class="nw">Right now,</span> a <em>virtual audio mixer</em> for Windows.</h1>
-        <p class="intro rise" style="--d:3" data-i18n-html="hero_p">First-year student at <a class="u" href="https://www.epitech.eu/" target="_blank" rel="noopener">Epitech Paris</a>, in the Programme Grande École (PGE). I also co-own <a class="u" href="https://mush.rip" target="_blank" rel="noopener">mush.rip</a>, a link-in-bio platform, where I look after product and operations.</p>
+        <p class="intro rise" style="--d:3" data-i18n-html="hero_p">First-year student at <a class="u" href="https://www.epitech.eu/" target="_blank" rel="noopener">Epitech Paris</a>, in the Programme Grande École (PGE). I also build <a class="u" href="https://epistudent.fr" target="_blank" rel="noopener">epistudent.fr</a>, a website that calculates a student’s budget.</p>
 
         <div class="hero-foot rise" style="--d:4">
           <p class="avail" data-i18n="avail">Available for an internship, freelance work or a collaboration</p>
@@ -534,7 +541,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
 </div>
 
 <!-- decorative strip: two identical halves so the loop is seamless; each half must stay wider than the viewport (7 repeats cover 5K screens) -->
-<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris ×&nbsp;</span><span>WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris × WaveDeck × mush.rip × Flockocord × Wingman × Epitech Paris ×&nbsp;</span></div></div>
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris ×&nbsp;</span><span>WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris ×&nbsp;</span></div></div>
 
 <div class="wrap rest">
 
@@ -606,11 +613,11 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
     <ul class="plist">
       <li class="prow t-red lnk">
         <div class="phead">
-          <h3 class="pname"><a href="https://mush.rip" target="_blank" rel="noopener">mush.rip<span class="ext" aria-hidden="true">↗</span></a></h3>
-          <p class="meta" data-i18n="mush_meta">co-owner&nbsp;· since&nbsp;2025</p>
+          <h3 class="pname"><a href="https://epistudent.fr" target="_blank" rel="noopener">epistudent.fr<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="meta" data-i18n="epi_meta">new project</p>
         </div>
         <div class="pbody">
-          <p data-i18n="mush_desc">Link-in-bio platform: one page that brings together a person’s links, social profiles and statistics. A small team builds it; as co-owner, I handle product and operations.</p>
+          <p data-i18n="epi_desc">Website that calculates a student’s budget.</p>
         </div>
       </li>
       <li class="prow t-ink">
@@ -623,10 +630,21 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
           <p class="stack">node.js&nbsp;· express&nbsp;· websocket&nbsp;· sqlite&nbsp;· jwt</p>
         </div>
       </li>
-      <li class="prow t-paper">
+      <li class="prow t-paper done">
+        <div class="phead">
+          <h3 class="pname">mush.rip</h3>
+          <p class="meta" data-i18n="mush_meta">co-owner&nbsp;· 2025</p>
+          <span class="tag" data-i18n="done">finished</span>
+        </div>
+        <div class="pbody">
+          <p data-i18n="mush_desc">Link-in-bio platform: one page that brought together a person’s links, social profiles and statistics. A small team built it; as co-owner, I handled product and operations.</p>
+        </div>
+      </li>
+      <li class="prow t-paper done">
         <div class="phead">
           <h3 class="pname">Wingman</h3>
           <p class="meta" data-i18n="community">community&nbsp;· Discord bot</p>
+          <span class="tag" data-i18n="done">finished</span>
         </div>
         <div class="pbody">
           <p data-i18n-html="wing_desc">A <span class="nw">Counter-Strike 2</span> community and its Discord bot: matchmaking, tournaments and anti-raid protection.</p>
@@ -664,7 +682,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
     <div>
       <dl class="xp xp--time">
         <div class="xp-row cur"><dt class="num" data-i18n="d1">Sept 2026 – present</dt><dd><b>Epitech Paris</b><span data-i18n-html="r1">Programme Grande École (PGE), first year</span></dd></div>
-        <div class="xp-row cur"><dt class="num" data-i18n="d2">2025 – present</dt><dd><b>mush.rip</b><span data-i18n="r2">Co-owner, product and operations, remote</span></dd></div>
+        <div class="xp-row"><dt class="num" data-i18n="d2">2025 – finished</dt><dd><b>mush.rip</b><span data-i18n="r2">Co-owner, product and operations, remote</span></dd></div>
         <div class="xp-row"><dt class="num">2026</dt><dd><b>Baccalauréat STI2D</b><span data-i18n="r3">Technology track, SIN specialisation (information systems and digital technology)</span></dd></div>
       </dl>
       <p class="cvline"><a class="u" href="mailto:julien.roullet@proton.me?subject=CV%20request" data-i18n="cv" data-i18n-href="cv_href">Full CV on request →</a></p>
@@ -674,7 +692,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   <section class="sec" id="off" aria-labelledby="h-off">
     <h2 class="sec-h" id="h-off"><span class="n">04</span><span data-i18n="off_h">off screen</span></h2>
     <div>
-      <p class="lede" data-i18n-html="off_p">Away from the keyboard: cars, skateboarding and catamaran sailing. And <span class="nw">Counter-Strike 2</span>, which is where Wingman comes from.</p>
+      <p class="lede" data-i18n-html="off_p">Away from the keyboard: cars, skateboarding and catamaran sailing. And <span class="nw">Counter-Strike 2</span>, which is where Wingman came from.</p>
       <div class="photos">
         <figure><picture><source srcset="assets/img/car.webp" type="image/webp"><img src="assets/img/car.jpg" alt="A blue sports coupé cornering on a race track" data-i18n-alt="img_car" width="660" height="470" loading="lazy" decoding="async"></picture><figcaption data-i18n="cap_car">fig. 2: on track</figcaption></figure>
         <figure><picture><source srcset="assets/img/skate.webp" type="image/webp"><img src="assets/img/skate.jpg" alt="Three skateboards on a train" data-i18n-alt="img_skate" width="460" height="613" loading="lazy" decoding="async"></picture><figcaption data-i18n="cap_skate">fig. 3: skateboarding</figcaption></figure>
