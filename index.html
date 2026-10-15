@@ -118,7 +118,28 @@ main:focus{outline:none}
 :root[data-theme="dark"] .i-sun,:root:not([data-theme="dark"]) .i-moon{display:none}
 
 /* ---------- hero ---------- */
-.hero{padding:0 0 84px}
+.hero{position:relative;isolation:isolate;padding:0 0 84px}
+main{overflow-x:clip}
+/* stage lights: red beams swinging from above + a glow that follows the pointer (decorative) */
+.hero-fx{--fx-o:.2;--fx-blend:multiply;position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;overflow:hidden;pointer-events:none}
+:root[data-theme="dark"] .hero-fx{--fx-o:.6;--fx-blend:screen}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero-fx{--fx-o:.6;--fx-blend:screen}}
+.beam{position:absolute;top:-12%;left:var(--x);width:var(--w,34vw);height:135%;margin-left:calc(var(--w,34vw) / -2);background:linear-gradient(to bottom,var(--c,var(--mark)),transparent 78%);clip-path:polygon(47% 0,53% 0,100% 100%,0 100%);transform-origin:50% 0;transform:rotate(var(--r,0deg));opacity:var(--fx-o);mix-blend-mode:var(--fx-blend)}
+.beams{position:absolute;inset:0;filter:blur(22px)}
+.beam:nth-child(1){--x:12%;--r:-14deg;--w:30vw}
+.beam:nth-child(2){--x:46%;--r:6deg;--w:38vw;--c:color-mix(in srgb,var(--mark) 55%,var(--text))}
+.beam:nth-child(3){--x:86%;--r:18deg;--w:32vw}
+.spot{position:absolute;inset:0;background:radial-gradient(480px circle at var(--mx,70%) var(--my,35%),color-mix(in srgb,var(--mark) 40%,transparent),transparent 70%);opacity:0;mix-blend-mode:var(--fx-blend);transition:opacity .5s ease}
+.hero-fx.lit .spot{opacity:var(--fx-o)}
+.hero-fx::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(transparent,var(--bg))}
+@media (prefers-reduced-motion:no-preference){
+  .beam{animation:sway var(--t,11s) ease-in-out infinite alternate,flick 7s ease-in-out infinite}
+  .beam:nth-child(1){--t:9s;animation-delay:-3s,-1s}
+  .beam:nth-child(2){--t:13s;animation-delay:-7s,-4s}
+  .beam:nth-child(3){--t:10s;animation-delay:-5s,-2.5s}
+}
+@keyframes sway{from{transform:rotate(calc(var(--r,0deg) - 11deg))}to{transform:rotate(calc(var(--r,0deg) + 11deg))}}
+@keyframes flick{0%,100%{opacity:var(--fx-o)}45%{opacity:calc(var(--fx-o) * .55)}60%{opacity:calc(var(--fx-o) * 1.15)}}
 .mast{display:flex;align-items:center;justify-content:space-between;gap:8px 24px;padding:11px 0;border-bottom:1px solid var(--rule);font:700 11px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
 .mast span:first-child{color:var(--text)}
 .hero-grid{display:grid;grid-template-columns:var(--col) minmax(0,1fr);gap:28px var(--gut);margin-top:52px}
@@ -437,7 +458,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   :root,:root[data-theme],.band-red,.band-ink{--bg:#fff;--bg-2:#f2f2f2;--text:#000;--muted:#333;--dim:#555;--rule:#d0d0d0;--line:#000;--accent:#000;--mark:#000;--on-mark:#fff;color-scheme:light}
   @page{margin:14mm 14mm}
   body{font-size:9.5pt;line-height:1.45;background:#fff}
-  .nav,.skip,.fc-fab,.fc-panel,.copy,.fig,.gh,#off,#support,.wd-more,.avail::before,#clock,.totop,.mast,.ticker,.wordmark,.avatar-wrap,.pname .ext{display:none!important}
+  .nav,.skip,.hero-fx,.fc-fab,.fc-panel,.copy,.fig,.gh,#off,#support,.wd-more,.avail::before,#clock,.totop,.mast,.ticker,.wordmark,.avatar-wrap,.pname .ext{display:none!important}
   .band-red,.band-ink{background:none;color:#000}
   .rise{animation:none!important}
   .wrap{max-width:none;padding:0}
@@ -513,6 +534,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
 <div class="wrap">
 
   <section class="hero" aria-labelledby="h-hero">
+    <div class="hero-fx" id="heroFx" aria-hidden="true"><div class="beams"><span class="beam"></span><span class="beam"></span><span class="beam"></span></div><span class="spot"></span></div>
     <p class="mast rise">
       <span>Portfolio</span>
       <span class="opt" data-i18n="mast_field">Web and desktop development</span>

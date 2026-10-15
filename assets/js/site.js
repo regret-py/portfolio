@@ -751,6 +751,23 @@
     onLang(function () { if (!panel.hidden) renderChips(); });
   })();
 
+  /* ===================== hero lights ===================== */
+  // the red glow follows the pointer over the hero (mouse/pen only, skipped with reduced motion)
+  (function () {
+    var fx = $('heroFx');
+    if (!fx || reduceMotion) return;
+    var hero = fx.parentNode, raf = 0, x = 0, y = 0;
+    function paint() { raf = 0; fx.style.setProperty('--mx', x + 'px'); fx.style.setProperty('--my', y + 'px'); }
+    hero.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      var r = fx.getBoundingClientRect();
+      x = e.clientX - r.left; y = e.clientY - r.top;
+      fx.classList.add('lit');
+      if (!raf) raf = requestAnimationFrame(paint);
+    });
+    hero.addEventListener('pointerleave', function () { fx.classList.remove('lit'); });
+  })();
+
   /* ===================== go ===================== */
   applyLang(lang);
   root.classList.remove('i18n-wait');

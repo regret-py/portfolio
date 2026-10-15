@@ -48,6 +48,8 @@ Streetwear-shop inspired: white, black and one signal red, hard edges, no shadow
   whole site; `--accent` is the variant used for red *text* (it is lighter in the dark theme to keep contrast).
 - The contact block (red) and the footer (black) look the same in both themes.
 - The strip under the introduction is decorative (`aria-hidden`) and stops with reduced motion.
+- The hero has stage lights behind it (`.hero-fx`): three red beams swinging from above, plus a glow that
+  follows the mouse (`site.js`, "hero lights"). Decorative, frozen with reduced motion, hidden in print.
 
 ## Features
 
