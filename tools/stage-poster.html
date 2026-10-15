@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Stage poster</title>
+<style>
+body{margin:0;padding:24px;background:#000;color:#f1f1f1;font:15px/1.55 "Helvetica Neue",Helvetica,Arial,sans-serif}
+p{max-width:44em;margin:0 0 14px}
+code{font-size:.92em}
+canvas{display:block;width:100%;height:auto;margin:20px 0;background:#151515}
+button{min-height:40px;padding:0 18px;border:1px solid #fff;background:#fff;color:#000;font:700 12px/1 "Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+</style>
+<script src="../assets/js/stage.js" defer></script>
+</head>
+<body>
+<p><b>Hero poster.</b> The hero shows <code>assets/img/stage.jpg</code> / <code>.webp</code> until the live render takes over, and keeps it when WebGL2 is missing. It must be the same picture as the live render: render it again here after any change to the scene in <code>assets/js/stage.js</code>.</p>
+<p>This renders the whole frame (1920×800) with the light at rest and the light theme's exposure, then saves <code>stage.png</code>. Export it as <code>stage.jpg</code> and <code>stage.webp</code> into <code>assets/img/</code> (for example with <a href="https://squoosh.app" style="color:inherit">squoosh.app</a>, or <code>cwebp -q 78 stage.png -o stage.webp</code>). Serve the site locally (<code>python3 -m http.server</code>) and open <code>/tools/stage-poster.html</code>.</p>
+<p><button id="go" type="button">Render</button> <span id="state"></span></p>
+<canvas id="frame"></canvas>
+<script>
+(function () {
+  var SPP = 2048, go = document.getElementById('go'), state = document.getElementById('state'), canvas = document.getElementById('frame');
+  go.addEventListener('click', function () {
+    var stage;
+    try { stage = new window.Stage(canvas); } catch (e) { state.textContent = 'WebGL2 is not available here: ' + e.message; return; }
+    stage.resize(1920, 800, 1, 0.5, 0.5);
+    go.disabled = true;
+    (function step() {
+      for (var i = 0; i < 4 && stage.samples < SPP - 1; i++) stage.render();   // no-op until the shaders are built
+      state.textContent = stage.samples + ' / ' + SPP + ' samples per pixel';
+      if (stage.samples < SPP - 1) { requestAnimationFrame(step); return; }
+      stage.render();   // the last frame and the capture in the same task, while the drawing is still there
+      var a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = 'stage.png';
+      a.click();
+      state.textContent = 'Done: stage.png saved.';
+      go.disabled = false;
+    })();
+  });
+})();
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@
  * 1. config & helpers      5. avatar reveal       9. Discord presence
  * 2. i18n (EN in the DOM)  6. WaveDeck mixer     10. visit counter (silent)
  * 3. theme                 7. GitHub graph       11. assistant (flockopops)
- * 4. nav                   8. contact
+ * 4. nav                   8. contact            12. hero stage (render: stage.js)
  */
 (function () {
   'use strict';
@@ -98,7 +98,8 @@
     fc_open: 'Une question\u202f?', fc_close: 'Fermer',
     fc_sub: 'assistant automatisé',
     fc_note: 'Réponses automatiques, parfois incomplètes.',
-    fc_label: 'Votre question', fc_ph: 'Posez une question sur Julien…', fc_send: 'envoyer'
+    fc_label: 'Votre question', fc_ph: 'Posez une question sur Julien…', fc_send: 'envoyer',
+    stage_point: 'La lumière suit votre curseur', stage_tap: 'Touchez la pièce pour déplacer la lumière'
   } };
 
   // strings only used from JS
@@ -111,7 +112,8 @@
       recent: ', {n} in the last 30 days',
       copy_aria: 'Copy email address', copied_live: 'Email address copied',
       mute: 'Mute', solo: 'Solo', fader: 'fader', pan: 'pan', running: 'RUNNING', muted: 'MUTED',
-      mixer: 'WaveDeck mixer, playable mock-up'
+      mixer: 'WaveDeck mixer, playable mock-up',
+      stage_count: 'rendered live on your GPU · {n} samples per pixel'
     },
     fr: {
       theme_to_light: 'Passer au thème clair', theme_to_dark: 'Passer au thème sombre',
@@ -121,7 +123,8 @@
       recent: ', dont {n} ces 30 derniers jours',
       copy_aria: 'Copier l’adresse e-mail', copied_live: 'Adresse e-mail copiée',
       mute: 'Muet', solo: 'Solo', fader: 'fader', pan: 'panoramique', running: 'EN MARCHE', muted: 'MUET',
-      mixer: 'Table de mixage WaveDeck, maquette jouable'
+      mixer: 'Table de mixage WaveDeck, maquette jouable',
+      stage_count: 'rendu en direct par votre carte graphique · {n}\u00a0échantillons par pixel'
     }
   };
 
@@ -751,22 +754,79 @@
     onLang(function () { if (!panel.hidden) renderChips(); });
   })();
 
-  /* ===================== hero lights ===================== */
-  // the red glow follows the pointer over the hero (mouse/pen only, skipped with reduced motion)
-  (function () {
-    var fx = $('heroFx');
-    if (!fx || reduceMotion) return;
-    var hero = fx.parentNode, raf = 0, x = 0, y = 0;
-    function paint() { raf = 0; fx.style.setProperty('--mx', x + 'px'); fx.style.setProperty('--my', y + 'px'); }
-    hero.addEventListener('pointermove', function (e) {
-      if (e.pointerType === 'touch') return;
-      var r = fx.getBoundingClientRect();
-      x = e.clientX - r.left; y = e.clientY - r.top;
-      fx.classList.add('lit');
-      if (!raf) raf = requestAnimationFrame(paint);
-    });
-    hero.addEventListener('pointerleave', function () { fx.classList.remove('lit'); });
-  })();
+  /* ===================== 12. hero stage ===================== */
+  // The hero is a room path traced live by stage.js. Its ceiling light follows the pointer
+  // (a tap on touch screens); each move restarts the render, which settles again within a
+  // second or two. The poster stays when WebGL2 is missing, and until the first samples are in.
+  // Started once the page has loaded, so that it never holds back the first paint.
+  function startStage() {
+    var hero = $('hero'), canvas = $('stageLive'), poster = $('stagePoster'), count = $('stageCount');
+    if (!hero || !canvas || !poster || typeof window.Stage !== 'function') return;
+    var stage;
+    try { stage = new window.Stage(canvas); } catch (e) { return; }
+
+    var MAX = 1024;       // samples per pixel: past this the image no longer changes
+    var REVEAL = 10;      // samples before the canvas fades in over the poster
+    var BUDGET = 1.1e6;   // pixels traced per frame, at most
+    var coarse = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+    var scale = coarse ? 0.5 : 0.75;
+    var raf = 0, aim = null, inView = true, dead = false, slow = 0, last = 0;
+
+    function label() {
+      count.textContent = s('stage_count').replace('{n}', stage.samples.toLocaleString(locale()));
+    }
+    function wake() { if (!raf && !dead) raf = requestAnimationFrame(tick); }
+    function fit() {
+      var r = canvas.getBoundingClientRect(), pos = getComputedStyle(poster).objectPosition.split(' ');
+      if (!r.width || !r.height) return;
+      var ratio = Math.min(Math.min(window.devicePixelRatio || 1, 2) * scale, Math.sqrt(BUDGET / (r.width * r.height)));
+      stage.resize(r.width, r.height, ratio, (parseFloat(pos[0]) || 50) / 100, (parseFloat(pos[1]) || 50) / 100);
+      wake();
+    }
+    function tick(now) {
+      raf = 0;
+      if (dead || !inView || document.hidden) return;
+      try {
+        if (!stage.ready()) { raf = requestAnimationFrame(tick); return; }
+      } catch (e) { dead = true; return; }
+      if (aim) {
+        // the light glides to the pointer instead of jumping
+        var l = stage.lamp, x = l[0] + (aim[0] - l[0]) * 0.3, z = l[1] + (aim[1] - l[1]) * 0.3;
+        if (Math.abs(aim[0] - x) + Math.abs(aim[1] - z) < 0.004) { x = aim[0]; z = aim[1]; aim = null; }
+        stage.moveLamp(x, z);
+      }
+      if (stage.samples < MAX) {
+        stage.render();
+        if (stage.samples <= 8 || stage.samples % 8 === 0 || stage.samples === MAX) label();
+        if (stage.samples >= REVEAL && !hero.classList.contains('live')) { hero.classList.add('live'); label(); }
+        // a graphics card that cannot keep up gets fewer pixels to trace
+        if (last && now - last > 50) slow++; else slow = Math.max(0, slow - 1);
+        last = now;
+        if (slow > 24 && scale > 0.4) { slow = 0; scale = Math.max(0.35, scale * 0.7); fit(); }
+      } else last = 0;
+      if (aim || stage.samples < MAX) raf = requestAnimationFrame(tick);
+    }
+    function point(e) {
+      var r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      aim = stage.aim((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+      wake();
+    }
+
+    hero.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse' || e.pointerType === 'pen') point(e); });
+    hero.addEventListener('click', function (e) { if (coarse) point(e); });   // a tap, not the start of a scroll
+    canvas.addEventListener('webglcontextlost', function () { dead = true; hero.classList.remove('live'); });
+    document.addEventListener('visibilitychange', function () { last = 0; wake(); });
+    if (hasIO) new IntersectionObserver(function (en) { inView = en[0].isIntersecting; last = 0; wake(); }).observe(hero);
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(canvas); else window.addEventListener('resize', fit);
+    onLang(function () { if (hero.classList.contains('live')) label(); });
+    function theme() { stage.setDark(root.getAttribute('data-theme') === 'dark'); }
+    new MutationObserver(theme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    theme();
+    fit();
+  }
+  if (document.readyState === 'complete') setTimeout(startStage, 0);
+  else window.addEventListener('load', function () { setTimeout(startStage, 0); });
 
   /* ===================== go ===================== */
   applyLang(lang);

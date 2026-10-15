@@ -17,6 +17,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/Jost-Italic-Latin.woff2" as="font" type="font/woff2" crossorigin>
+<script src="assets/js/stage.js" defer></script>
 <script src="assets/js/site.js" defer></script>
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="Julien">
@@ -118,31 +119,27 @@ main:focus{outline:none}
 :root[data-theme="dark"] .i-sun,:root:not([data-theme="dark"]) .i-moon{display:none}
 
 /* ---------- hero ---------- */
-.hero{position:relative;isolation:isolate;padding:0 0 84px}
-main{overflow-x:clip}
-/* stage lights: red beams swinging from above + a glow that follows the pointer (decorative) */
-.hero-fx{--fx-o:.2;--fx-blend:multiply;position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;overflow:hidden;pointer-events:none}
-:root[data-theme="dark"] .hero-fx{--fx-o:.6;--fx-blend:screen}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero-fx{--fx-o:.6;--fx-blend:screen}}
-.beam{position:absolute;top:-12%;left:var(--x);width:var(--w,34vw);height:135%;margin-left:calc(var(--w,34vw) / -2);background:linear-gradient(to bottom,var(--c,var(--mark)),transparent 78%);clip-path:polygon(47% 0,53% 0,100% 100%,0 100%);transform-origin:50% 0;transform:rotate(var(--r,0deg));opacity:var(--fx-o);mix-blend-mode:var(--fx-blend)}
-.beams{position:absolute;inset:0;filter:blur(22px)}
-.beam:nth-child(1){--x:12%;--r:-14deg;--w:30vw}
-.beam:nth-child(2){--x:46%;--r:6deg;--w:38vw;--c:color-mix(in srgb,var(--mark) 55%,var(--text))}
-.beam:nth-child(3){--x:86%;--r:18deg;--w:32vw}
-.spot{position:absolute;inset:0;background:radial-gradient(480px circle at var(--mx,70%) var(--my,35%),color-mix(in srgb,var(--mark) 40%,transparent),transparent 70%);opacity:0;mix-blend-mode:var(--fx-blend);transition:opacity .5s ease}
-.hero-fx.lit .spot{opacity:var(--fx-o)}
-.hero-fx::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(transparent,var(--bg))}
-@media (prefers-reduced-motion:no-preference){
-  .beam{animation:sway var(--t,11s) ease-in-out infinite alternate,flick 7s ease-in-out infinite}
-  .beam:nth-child(1){--t:9s;animation-delay:-3s,-1s}
-  .beam:nth-child(2){--t:13s;animation-delay:-7s,-4s}
-  .beam:nth-child(3){--t:10s;animation-delay:-5s,-2.5s}
-}
-@keyframes sway{from{transform:rotate(calc(var(--r,0deg) - 11deg))}to{transform:rotate(calc(var(--r,0deg) + 11deg))}}
-@keyframes flick{0%,100%{opacity:var(--fx-o)}45%{opacity:calc(var(--fx-o) * .55)}60%{opacity:calc(var(--fx-o) * 1.15)}}
+/* a room path traced live behind the introduction (assets/js/stage.js, driven by site.js): its ceiling light follows the pointer */
+.hero{position:relative;isolation:isolate;overflow:hidden;display:flex;min-height:max(620px,calc(min(100svh,980px) - var(--nav-h)))}
+.hero-in{position:relative;display:flex;flex-direction:column;width:100%;padding-bottom:76px}
+.stage{position:absolute;inset:0;z-index:-1;overflow:hidden;background:var(--bg-2);pointer-events:none}
+/* the poster is the same render, converged; both are cropped the same way (stage.js reads object-position) */
+.stage img,.stage canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.stage canvas{opacity:0;transition:opacity 1s ease}
+.hero.live .stage canvas{opacity:1}
+/* the page colour washes the left side and the bottom, under the text */
+.stage::after{content:"";position:absolute;inset:0;background:linear-gradient(color-mix(in srgb,var(--bg) 55%,transparent),transparent 13%),linear-gradient(90deg,color-mix(in srgb,var(--bg) 70%,transparent),color-mix(in srgb,var(--bg) 42%,transparent) 46%,transparent 68%),linear-gradient(transparent 70%,var(--bg))}
+/* dark theme: the same room with the lights down (the live render lowers its exposure instead) */
+:root[data-theme="dark"] .stage img{filter:brightness(.55)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stage img{filter:brightness(.55)}}
+.stage-note{position:absolute;right:32px;bottom:22px;display:none;justify-items:end;gap:4px;margin:0;font:700 10.5px/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);text-align:right}
+.hero.live .stage-note{display:grid;animation:note-in .6s ease both}
+@keyframes note-in{from{opacity:0}}
+.stage-note .tap{display:none}
+@media (pointer:coarse){.stage-note .tap{display:inline}.stage-note .point{display:none}}
 .mast{display:flex;align-items:center;justify-content:space-between;gap:8px 24px;padding:11px 0;border-bottom:1px solid var(--rule);font:700 11px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
 .mast span:first-child{color:var(--text)}
-.hero-grid{display:grid;grid-template-columns:var(--col) minmax(0,1fr);gap:28px var(--gut);margin-top:52px}
+.hero-grid{display:grid;grid-template-columns:var(--col) minmax(0,1fr);gap:28px var(--gut);margin-top:auto;padding-top:52px}
 .id{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
 .avatar-wrap{position:relative;width:var(--av);height:var(--av);flex:0 0 auto;background:#000;border:1px solid var(--line);-webkit-tap-highlight-color:transparent}
 .js .avatar-wrap{cursor:pointer}
@@ -395,7 +392,13 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
 @media (max-width:900px){
   .sec{padding-bottom:72px}
   .rest{padding-top:60px}
-  .hero-grid{grid-template-columns:minmax(0,1fr);gap:34px;margin-top:40px}
+  .hero-grid{grid-template-columns:minmax(0,1fr);gap:34px;margin-top:0;padding-top:calc(var(--stage-h) - 120px)}
+  /* the room becomes a picture above the text */
+  .hero{--stage-h:min(62svh,112vw);display:block;min-height:0}
+  .stage{bottom:auto;height:var(--stage-h)}
+  .stage img,.stage canvas{object-position:85% 50%}
+  .stage::after{background:linear-gradient(color-mix(in srgb,var(--bg) 55%,transparent),transparent 16%,transparent 58%,var(--bg) 97%)}
+  .stage-note{position:static;justify-items:start;margin-top:30px;text-align:left}
   .id{flex-direction:row;align-items:center;gap:18px}
   :root{--av:84px}
   .wd{grid-template-columns:minmax(0,1fr);gap:48px}
@@ -415,8 +418,8 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   .brand{font-size:18px}
   .nlinks{gap:14px}
   .tools{margin-left:0;gap:6px}
-  .hero{padding:0 0 60px}
-  .hero-grid{gap:28px;margin-top:30px}
+  .hero-in{padding-bottom:60px}
+  .hero-grid{gap:28px}
   :root{--av:68px}
   .intro{margin-top:22px;font-size:16px}
   .hero-foot{margin-top:28px}
@@ -458,13 +461,14 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   :root,:root[data-theme],.band-red,.band-ink{--bg:#fff;--bg-2:#f2f2f2;--text:#000;--muted:#333;--dim:#555;--rule:#d0d0d0;--line:#000;--accent:#000;--mark:#000;--on-mark:#fff;color-scheme:light}
   @page{margin:14mm 14mm}
   body{font-size:9.5pt;line-height:1.45;background:#fff}
-  .nav,.skip,.hero-fx,.fc-fab,.fc-panel,.copy,.fig,.gh,#off,#support,.wd-more,.avail::before,#clock,.totop,.mast,.ticker,.wordmark,.avatar-wrap,.pname .ext{display:none!important}
+  .nav,.skip,.stage,.stage-note,.fc-fab,.fc-panel,.copy,.fig,.gh,#off,#support,.wd-more,.avail::before,#clock,.totop,.mast,.ticker,.wordmark,.avatar-wrap,.pname .ext{display:none!important}
   .band-red,.band-ink{background:none;color:#000}
   .rise{animation:none!important}
   .wrap{max-width:none;padding:0}
   .rest{padding-top:0}
-  .hero{padding:0 0 10pt}
-  .hero-grid{grid-template-columns:1fr;gap:6pt;margin-top:0}
+  .hero{display:block;min-height:0}
+  .hero-in{padding-bottom:10pt}
+  .hero-grid{grid-template-columns:1fr;gap:6pt;margin-top:0;padding-top:0}
   h1{font-size:18pt}
   h1 em{padding:0;margin:0;color:#000;background:none;text-decoration:underline}
   .intro{margin-top:8pt;font-size:10pt}
@@ -531,10 +535,13 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
 
 <main id="main" tabindex="-1">
 <span id="top"></span>
-<div class="wrap">
-
-  <section class="hero" aria-labelledby="h-hero">
-    <div class="hero-fx" id="heroFx" aria-hidden="true"><div class="beams"><span class="beam"></span><span class="beam"></span><span class="beam"></span></div><span class="spot"></span></div>
+<section class="hero" id="hero" aria-labelledby="h-hero">
+  <!-- the room: a poster first, then the live render on the canvas (assets/js/stage.js) -->
+  <div class="stage" aria-hidden="true">
+    <picture><source srcset="assets/img/stage.webp" type="image/webp"><img id="stagePoster" src="assets/img/stage.jpg" alt="" width="1920" height="800" fetchpriority="high"></picture>
+    <canvas id="stageLive"></canvas>
+  </div>
+  <div class="wrap hero-in">
     <p class="mast rise">
       <span>Portfolio</span>
       <span class="opt" data-i18n="mast_field">Web and desktop development</span>
@@ -567,8 +574,12 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
         </div>
       </div>
     </div>
-  </section>
-</div>
+    <p class="stage-note" aria-hidden="true">
+      <span><span class="point" data-i18n="stage_point">The light follows your cursor</span><span class="tap" data-i18n="stage_tap">Tap the room to move the light</span></span>
+      <span class="num" id="stageCount"></span>
+    </p>
+  </div>
+</section>
 
 <!-- decorative strip: two identical halves so the loop is seamless; each half must stay wider than the viewport (7 repeats cover 5K screens) -->
 <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris ×&nbsp;</span><span>WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris ×&nbsp;</span></div></div>
