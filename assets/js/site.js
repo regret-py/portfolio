@@ -2,10 +2,10 @@
  * regret.info · site script
  * Plain JavaScript, no build step, no dependency. Loaded with `defer`.
  *
- * 1. config & helpers      5. avatar reveal       9. Discord presence
- * 2. i18n (EN in the DOM)  6. WaveDeck mixer     10. visit counter (silent)
- * 3. theme                 7. GitHub graph       11. assistant (flockopops)
- * 4. nav                   8. contact
+ * 1. config & helpers      5. avatar reveal       9. visit counter (silent)
+ * 2. i18n (EN in the DOM)  6. GitHub graph       10. assistant (flockopops)
+ * 3. theme                 7. contact
+ * 4. nav                   8. Discord presence
  */
 (function () {
   'use strict';
@@ -41,31 +41,32 @@
     if (l0 !== 'fr' && l0 !== 'en') l0 = /^fr\b/i.test(navigator.language || '') ? 'fr' : 'en';
     root.lang = l0;
   }
-  root.classList.add('anim');
 
   /* ===================== 2. i18n ===================== */
   // English lives in the HTML (what search engines index). French overrides it here.
   // Typography: U+00A0 before ":" and U+202F before ";", "?" and "!".
   var T = { fr: {
     doc_title: 'Julien · Développeur web et desktop, Paris',
-    doc_desc: 'Julien, développeur web et desktop basé à Paris. Étudiant en 1re année à Epitech, il développe WaveDeck, une table de mixage audio virtuelle pour Windows, et epistudent.fr, un site qui calcule le budget d’un étudiant.',
+    doc_desc: 'Julien, développeur web et desktop basé à Paris. Étudiant en 1re année à Epitech, il vient de sortir REKA, une console de mixage pour Windows, et développe epistudent.fr, un site qui calcule le budget d’un étudiant.',
     skip: 'Aller au contenu',
     home_aria: 'Julien, accueil', nav_aria: 'Navigation principale', lang_group: 'Langue',
     nav_projects: 'projets', nav_skills: 'compétences', nav_bg: 'parcours', nav_contact: 'contact',
     role: 'développeur\u00a0· Paris',
     mast_field: 'Développement web et desktop', mast_geo: '48,86°\u00a0N, 2,35°\u00a0E',
-    hero_h: 'Je développe des applications web et desktop. <span class="nw">En ce moment,</span> une <em>table de mixage audio</em> pour Windows.',
+    hero_h: 'Je développe des applications web et desktop. <span class="nw">Vient de sortir\u00a0:</span> <em>REKA</em>, une console de mixage pour Windows.',
     hero_p: 'Étudiant en 1<sup>re</sup> année à <a class="u" href="https://www.epitech.eu/" target="_blank" rel="noopener">Epitech Paris</a>, au sein du Programme Grande École (PGE). Je développe aussi <a class="u" href="https://epistudent.fr" target="_blank" rel="noopener">epistudent.fr</a>, un site qui calcule le budget d’un étudiant.',
     avail: 'Disponible pour un stage, une mission freelance ou une collaboration',
     cta_mail: 'Écrire un e-mail', cta_cv: 'CV sur demande',
     cv_href: 'mailto:julien.roullet@proton.me?subject=Demande%20de%20CV',
-    now: 'en ce moment', wip: 'en développement',
-    wd_p1: 'Une table de mixage virtuelle et modulaire pour Windows, ma propre version de Voicemeeter.',
-    wd_p2: 'Un moteur audio central s’appuie sur le périphérique principal, qui sert d’horloge maître. Les tranches de mixage s’empilent dessus, les périphériques d’entrée et de sortie supplémentaires y sont raccordés par des tampons circulaires, et des plugins VST3 peuvent être insérés dans la chaîne de traitement.',
-    sp_platform: 'plateforme', sp_lang: 'langage',
-    sp_plugins_v: 'VST3, chargés avec Pedalboard', sp_code_v: 'pas encore public',
-    wd_link: 'Me contacter au sujet de WaveDeck →',
-    wd_fig: 'fig. 1\u00a0: maquette jouable. Faites glisser les faders, appuyez sur M (muet) ou S (solo).',
+    rk_h: 'nouveauté', rk_out: 'disponible',
+    rk_p1: 'Une seule console de mixage pour Windows. REKA pilote Voicemeeter et un logiciel d’effets, qui tournent tous les deux cachés en arrière-plan\u00a0: on ne voit que la console.',
+    rk_p2: 'Faders, muets, envois, VU-mètres et une chaîne d’effets VST sur chaque tranche, un volume par application, l’Intellipan, des thèmes de couleur et des mises à jour automatiques. Le tout tient dans un seul REKA.exe, testé et compilé sur Windows par GitHub Actions.',
+    sp_platform: 'plateforme', sp_lang: 'langage', sp_fx: 'effets', sp_credits: 'crédits',
+    sp_audio_v: 'Voicemeeter Potato ou Banana', sp_fx_v: 'VST via REAPER, FL Studio ou Equalizer APO',
+    sp_credits_v: 'avec les contributions de Zerka et Fyra',
+    rk_dl: 'Télécharger pour Windows', rk_note: 'Gratuit, sur GitHub. REKA se met ensuite à jour tout seul.',
+    img_reka: 'La console REKA\u00a0: six tranches, chacune avec ses effets, ses envois, son Intellipan, son bouton muet, son fader et son VU-mètre, à côté du panneau Master',
+    rk_fig: 'fig. 1\u00a0: REKA en mode démo (REKA.exe --demo).',
     epi_meta: 'nouveau projet', epi_desc: 'Site web qui calcule le budget d’un étudiant.', done: 'terminé',
     mush_meta: 'copropriétaire\u00a0· 2025',
     mush_desc: 'Plateforme link-in-bio\u00a0: une page unique qui réunissait les liens, les réseaux sociaux et les statistiques d’une personne. Une petite équipe la développait\u202f; en tant que copropriétaire, je m’occupais du produit et des opérations.',
@@ -74,6 +75,7 @@
     community: 'communauté\u00a0· bot Discord',
     wing_desc: 'Une communauté <span class="nw">Counter-Strike 2</span> et son bot Discord\u00a0: matchmaking, tournois et protection anti-raid.',
     sk_lang: 'langages', sk_desk: 'desktop et audio', sk_front: 'front-end', sk_back: 'back-end', sk_tools: 'outils', sk_learn: 'en apprentissage',
+    sk_desk_v: 'PySide6 (Qt), API Remote de Voicemeeter, scripts REAPER (Lua), VST, PyInstaller',
     sk_front_v: 'HTML, CSS, React, référencement technique (SEO)',
     sk_learn_v: 'Le C, l’environnement Unix et la gestion de la mémoire, à Epitech',
     gh_h: 'Activité GitHub', gh_sub: 'contributions sur les 12 derniers mois', gh_less: 'moins', gh_more: 'plus',
@@ -86,7 +88,7 @@
     off_p: 'En dehors du clavier\u00a0: l’automobile, le skate et le catamaran. Et <span class="nw">Counter-Strike 2</span>, d’où est né Wingman.',
     img_car: 'Un coupé sportif bleu en courbe sur un circuit', img_skate: 'Trois skateboards dans un train', img_sail: 'Un catamaran en mer, une coque levée',
     cap_car: 'fig. 2\u00a0: sur circuit', cap_skate: 'fig. 3\u00a0: skate', cap_sail: 'fig. 4\u00a0: catamaran',
-    ct_p: 'Pour un stage, une mission freelance ou une question sur WaveDeck, le plus simple est de m’écrire par e-mail.',
+    ct_p: 'Pour un stage, une mission freelance ou une question sur REKA, le plus simple est de m’écrire par e-mail.',
     sup_h: 'soutien',
     sup_p: 'Si mon travail vous est utile, vous pouvez le soutenir par un don.',
     sup_note: 'Paiement sécurisé par Stripe\u00a0: je ne vois jamais vos informations de carte.',
@@ -109,9 +111,7 @@
       online: 'online', idle: 'away', dnd: 'do not disturb', offline: 'offline',
       cell_one: 'contribution', cell_many: 'contributions', no_contrib: 'No contributions',
       recent: ', {n} in the last 30 days',
-      copy_aria: 'Copy email address', copied_live: 'Email address copied',
-      mute: 'Mute', solo: 'Solo', fader: 'fader', pan: 'pan', running: 'RUNNING', muted: 'MUTED',
-      mixer: 'WaveDeck mixer, playable mock-up'
+      copy_aria: 'Copy email address', copied_live: 'Email address copied'
     },
     fr: {
       theme_to_light: 'Passer au thème clair', theme_to_dark: 'Passer au thème sombre',
@@ -119,9 +119,7 @@
       online: 'en ligne', idle: 'absent', dnd: 'ne pas déranger', offline: 'hors ligne',
       cell_one: 'contribution', cell_many: 'contributions', no_contrib: 'Aucune contribution',
       recent: ', dont {n} ces 30 derniers jours',
-      copy_aria: 'Copier l’adresse e-mail', copied_live: 'Adresse e-mail copiée',
-      mute: 'Muet', solo: 'Solo', fader: 'fader', pan: 'panoramique', running: 'EN MARCHE', muted: 'MUET',
-      mixer: 'Table de mixage WaveDeck, maquette jouable'
+      copy_aria: 'Copier l’adresse e-mail', copied_live: 'Adresse e-mail copiée'
     }
   };
 
@@ -240,127 +238,7 @@
     onLang(label);
   })();
 
-  /* ===================== 6. WaveDeck mixer (playable mock-up) ===================== */
-  (function () {
-    var mixer = document.querySelector('.mixer');
-    if (!mixer) return;
-    var stateEl = $('mxState');
-    var MAX = 0.9; // the cap travels from 0 to 90 % of the track
-    function dbOf(p) { return p < 0.04 ? -Infinity : (p - 0.78) * 40; }
-    function dbText(d) { return d === -Infinity ? '-∞' : (d > 0 ? '+' : '') + d.toFixed(1); }
-    var strips = [].slice.call(mixer.querySelectorAll('.strip')).map(function (st) {
-      var cap = st.querySelector('.cap'), knob = st.querySelector('.knob');
-      var o = {
-        name: st.querySelector('.slabel').textContent, master: st.classList.contains('strip--master'),
-        fader: st.querySelector('.fader'), cap: cap, knob: knob,
-        meter: st.querySelector('.meter i'), clip: st.querySelector('.clip'), db: st.querySelector('.db'),
-        m: st.querySelector('.m'), s: st.querySelector('.s'),
-        pos: parseFloat(cap.style.bottom) / 100, rot: parseFloat(knob.style.getPropertyValue('--rot')) || 0
-      };
-      o.pos0 = o.pos; o.rot0 = o.rot;
-      return o;
-    });
-    function label() {
-      strips.forEach(function (o) {
-        o.fader.setAttribute('aria-label', o.name + ' ' + s('fader'));
-        o.knob.setAttribute('aria-label', o.name + ' ' + s('pan'));
-        o.m.setAttribute('aria-label', s('mute') + ' ' + o.name);
-        o.s.setAttribute('aria-label', s('solo') + ' ' + o.name);
-      });
-      mixer.setAttribute('aria-label', s('mixer'));
-    }
-    function update() {
-      var soloOn = strips.some(function (o) { return !o.master && o.s.classList.contains('on'); });
-      var master = null, sum = 0, n = 0;
-      strips.forEach(function (o) {
-        var d = dbOf(o.pos), muted = o.m.classList.contains('on');
-        o.cap.style.bottom = (o.pos * 100).toFixed(1) + '%';
-        o.db.textContent = muted ? '-∞' : dbText(d);
-        o.fader.setAttribute('aria-valuenow', Math.round(o.pos / MAX * 100));
-        o.fader.setAttribute('aria-valuetext', (muted ? s('muted') + ', ' : '') + dbText(d) + ' dB');
-        o.knob.style.setProperty('--rot', o.rot + 'deg');
-        o.knob.setAttribute('aria-valuenow', Math.round(o.rot));
-        if (o.master) { master = o; return; }
-        var silent = muted || (soloOn && !o.s.classList.contains('on'));
-        o.g = silent ? 0 : Math.min(1.15, o.pos / 0.78);
-        o.meter.style.setProperty('--g', o.g.toFixed(3));
-        o.clip.classList.toggle('on', !silent && d > 0.5);
-        sum += o.g; n++;
-      });
-      if (master) {
-        var mg = master.m.classList.contains('on') ? 0 : Math.min(1.15, master.pos / 0.78) * Math.min(1, sum / Math.max(1, n) * 1.6);
-        master.meter.style.setProperty('--g', mg.toFixed(3));
-        master.clip.classList.toggle('on', mg > 1.02);
-        var off = mg < 0.02;
-        mixer.classList.toggle('off', off);
-        if (stateEl) stateEl.textContent = off ? s('muted') : s('running');
-      }
-    }
-    function drag(el, onMove) {
-      el.addEventListener('pointerdown', function (e) {
-        if (e.button > 0) return;
-        e.preventDefault();
-        el.focus({ preventScroll: true });
-        el.setPointerCapture(e.pointerId);
-        el.classList.add('drag');
-        onMove(e, true);
-        function mv(ev) { onMove(ev, false); }
-        function up() {
-          el.classList.remove('drag');
-          el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); el.removeEventListener('pointercancel', up);
-        }
-        el.addEventListener('pointermove', mv); el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
-      });
-    }
-    strips.forEach(function (o) {
-      // fader: drag or click to set, arrow keys, double-click to reset
-      var f = o.fader;
-      f.setAttribute('role', 'slider'); f.tabIndex = 0;
-      f.setAttribute('aria-valuemin', '0'); f.setAttribute('aria-valuemax', '100'); f.setAttribute('aria-orientation', 'vertical');
-      drag(f, function (e) {
-        var r = f.getBoundingClientRect();
-        o.pos = Math.max(0, Math.min(MAX, (r.bottom - e.clientY - o.cap.offsetHeight / 2) / r.height));
-        update();
-      });
-      f.addEventListener('dblclick', function () { o.pos = o.pos0; update(); });
-      f.addEventListener('keydown', function (e) {
-        var st = { ArrowUp: .02, ArrowRight: .02, ArrowDown: -.02, ArrowLeft: -.02, PageUp: .1, PageDown: -.1 }[e.key];
-        if (e.key === 'Home') o.pos = 0;
-        else if (e.key === 'End') o.pos = MAX;
-        else if (st) o.pos = Math.max(0, Math.min(MAX, o.pos + st));
-        else return;
-        e.preventDefault(); update();
-      });
-      // knob: vertical drag, arrow keys, double-click to reset
-      var k = o.knob, y0 = 0, r0 = 0;
-      k.setAttribute('role', 'slider'); k.tabIndex = 0;
-      k.setAttribute('aria-valuemin', '-135'); k.setAttribute('aria-valuemax', '135');
-      drag(k, function (e, first) {
-        if (first) { y0 = e.clientY; r0 = o.rot; }
-        o.rot = Math.max(-135, Math.min(135, r0 + (y0 - e.clientY) * 2.2));
-        update();
-      });
-      k.addEventListener('dblclick', function () { o.rot = o.rot0; update(); });
-      k.addEventListener('keydown', function (e) {
-        var st = { ArrowUp: 10, ArrowRight: 10, ArrowDown: -10, ArrowLeft: -10 }[e.key];
-        if (!st) return;
-        e.preventDefault(); o.rot = Math.max(-135, Math.min(135, o.rot + st)); update();
-      });
-      // mute / solo
-      [o.m, o.s].forEach(function (b) {
-        b.addEventListener('click', function () {
-          var on = b.classList.toggle('on');
-          b.setAttribute('aria-pressed', on ? 'true' : 'false');
-          update();
-        });
-      });
-    });
-    mixer.setAttribute('role', 'group');
-    label(); update();
-    onLang(function () { label(); update(); });
-  })();
-
-  /* ===================== 7. GitHub contributions ===================== */
+  /* ===================== 6. GitHub contributions ===================== */
   (function () {
     var grid = $('ghGrid'), months = $('ghMonths'), countEl = $('ghCount'), recentEl = $('ghRecent');
     if (!grid || !months) return;
@@ -420,7 +298,7 @@
       requestAnimationFrame(function () { grid.scrollLeft = grid.scrollWidth; months.scrollLeft = grid.scrollLeft; });
     }
     // Snapshot used until the live data arrives (or if the API is down).
-    var SNAP = {"start":"2025-09-28","levels":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041240010000000100000000010044242132120","nz":"331:8,332:2,333:4,334:8,337:2,345:1,355:2,358:26,359:13,360:4,361:9,362:3,363:2,364:6,365:3,366:2,367:3","total":98};
+    var SNAP = {"start":"2025-10-19","levels":"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000312300100000001000000000100442311211132101040000110121140010","nz":"310:8,311:2,312:4,313:8,316:2,324:1,334:2,337:26,338:13,339:4,340:9,341:3,342:2,343:6,344:3,345:2,346:3,347:10,348:6,349:2,351:2,353:14,358:3,359:1,361:1,362:4,363:1,364:1,365:12,368:3","total":158};
     if (SNAP) {
       var counts = [];
       for (var i = 0; i < SNAP.levels.length; i++) counts.push(0);
@@ -445,7 +323,7 @@
       .catch(function () {});
   })();
 
-  /* ===================== 8. contact: copy address, local time ===================== */
+  /* ===================== 7. contact: copy address, local time ===================== */
   (function () {
     var cp = $('copyEmail');
     if (cp && (navigator.clipboard || document.queryCommandSupported && document.queryCommandSupported('copy'))) {
@@ -490,7 +368,7 @@
     if (yr) yr.textContent = new Date().getFullYear();
   })();
 
-  /* ===================== 9. Discord presence (Lanyard) ===================== */
+  /* ===================== 8. Discord presence (Lanyard) ===================== */
   // Shows the status only (no activity). Needs the account to be in the Lanyard server.
   (function () {
     var pres = $('dPres'), dot = $('dDot'), act = $('dAct');
@@ -519,7 +397,7 @@
     onLang(paint);
   })();
 
-  /* ===================== 10. visit counter (silent) ===================== */
+  /* ===================== 9. visit counter (silent) ===================== */
   // Counts one visit per session on the production host. Nothing is displayed.
   // Read the total at https://abacus.jasoncameron.dev/get/julien-roullet-portfolio/views
   (function () {
@@ -530,7 +408,7 @@
       .catch(function () {});
   })();
 
-  /* ===================== 11. assistant (flockopops) ===================== */
+  /* ===================== 10. assistant (flockopops) ===================== */
   // Uses CONFIG.chatApi (Groq proxy, see api/chat.js) when set; otherwise, or if it fails, the scripted answers below.
   (function () {
     var fab = $('fcOpen'), panel = $('fcPanel');
@@ -542,9 +420,9 @@
 
     // Generic entries (who, thanks) come last: on a tie, the more specific answer wins.
     var KB = [
-      { w: 2, k: ['wavedeck', 'wave', 'audio', 'voicemeeter', 'mix', 'mixer', 'mixage', 'sound', 'vst', 'vst3'],
-        en: 'WaveDeck is a modular virtual audio mixer for Windows, Julien’s own take on Voicemeeter. It is written in Python with PySide6, uses sounddevice for audio and Pedalboard to host VST3 plugins. The code is not public yet.',
-        fr: 'WaveDeck est une table de mixage audio virtuelle et modulaire pour Windows, la version de Julien de Voicemeeter. Elle est écrite en Python avec PySide6, utilise sounddevice pour l’audio et Pedalboard pour charger des plugins VST3. Le code n’est pas encore public.' },
+      { w: 2, k: ['reka', 'wavedeck', 'audio', 'voicemeeter', 'reaper', 'mix', 'mixer', 'mixage', 'console', 'sound', 'vst', 'vst3', 'download', 'telecharger', 'exe'],
+        en: 'REKA is Julien’s mixing console for Windows, now released. It drives Voicemeeter (Potato or Banana) and an effects host (REAPER, FL Studio or Equalizer APO), both hidden in the background, with VST effects on every strip, per-application volume and automatic updates. Written in Python with PySide6; the code and REKA.exe are on GitHub: <a href="https://github.com/regret-py/rekav2" target="_blank" rel="noopener">regret-py/rekav2</a>.',
+        fr: 'REKA est la console de mixage pour Windows de Julien, désormais disponible. Elle pilote Voicemeeter (Potato ou Banana) et un logiciel d’effets (REAPER, FL Studio ou Equalizer APO), cachés en arrière-plan, avec des effets VST sur chaque tranche, un volume par application et des mises à jour automatiques. Écrite en Python avec PySide6\u00a0; le code et REKA.exe sont sur GitHub\u00a0: <a href="https://github.com/regret-py/rekav2" target="_blank" rel="noopener">regret-py/rekav2</a>.' },
       { k: ['epistudent', 'budget', 'calculator', 'calculateur', 'calcul'],
         en: 'epistudent.fr is Julien’s new project: a website that calculates a student’s budget.',
         fr: 'epistudent.fr est le nouveau projet de Julien\u00a0: un site qui calcule le budget d’un étudiant.' },
@@ -570,8 +448,8 @@
         en: 'You can reach Julien by email at ' + MAIL + ', on Discord (starbadge) or on GitHub (' + GH + '). He is open to internships, freelance work and collaborations.',
         fr: 'Vous pouvez joindre Julien par e-mail à ' + MAIL + ', sur Discord (starbadge) ou sur GitHub (' + GH + '). Il est ouvert aux stages, aux missions freelance et aux collaborations.' },
       { k: ['stack', 'tech', 'techno', 'technologie', 'language', 'langage', 'tool', 'outil', 'python', 'react', 'node', 'javascript', 'skill', 'competence'],
-        en: 'Languages: Python, JavaScript and Bash, with C currently being learned at Epitech. Also PySide6 (Qt) for desktop, Node.js, Express and React for the web, SQLite, Git and Linux.',
-        fr: 'Langages\u00a0: Python, JavaScript et Bash, ainsi que le C, en cours d’apprentissage à Epitech. Également PySide6 (Qt) pour le desktop, Node.js, Express et React pour le web, SQLite, Git et Linux.' },
+        en: 'Languages: Python, JavaScript and Bash, with C currently being learned at Epitech. Also PySide6 (Qt) and PyInstaller for desktop, Voicemeeter and REAPER for audio, Node.js, Express and React for the web, SQLite, Git, GitHub Actions and Linux.',
+        fr: 'Langages\u00a0: Python, JavaScript et Bash, ainsi que le C, en cours d’apprentissage à Epitech. Également PySide6 (Qt) et PyInstaller pour le desktop, Voicemeeter et REAPER pour l’audio, Node.js, Express et React pour le web, SQLite, Git, GitHub Actions et Linux.' },
       { k: ['epitech', 'school', 'ecole', 'study', 'studies', 'etude', 'student', 'etudiant', 'pge', 'bac', 'sti2d', 'formation', 'cursus', 'diplome', 'parcours'],
         en: 'Julien is in the first year of Epitech Paris’s Programme Grande École (PGE), where he is learning C and the Unix environment. Before that: a STI2D baccalauréat with the SIN specialisation (2026).',
         fr: 'Julien est en 1re année du Programme Grande École d’Epitech Paris (PGE), où il apprend le C et l’environnement Unix. Auparavant\u00a0: baccalauréat STI2D, spécialité SIN (2026).' },
@@ -586,11 +464,11 @@
         en: 'Off screen: cars, skateboarding, catamaran sailing and Counter-Strike 2.',
         fr: 'Hors écran\u00a0: l’automobile, le skate, le catamaran et Counter-Strike 2.' },
       { k: ['project', 'projet', 'travaux', 'work', 'build', 'portfolio', 'realisation'],
-        en: 'Main projects: WaveDeck (virtual audio mixer for Windows), epistudent.fr (a website that calculates a student’s budget) and Flockocord (real-time chat application). Earlier projects, now finished: mush.rip (link-in-bio platform he co-owned) and Wingman (Counter-Strike 2 community and Discord bot).',
-        fr: 'Projets principaux\u00a0: WaveDeck (table de mixage audio virtuelle pour Windows), epistudent.fr (un site qui calcule le budget d’un étudiant) et Flockocord (messagerie en temps réel). Projets passés, aujourd’hui terminés\u00a0: mush.rip (plateforme link-in-bio dont il était copropriétaire) et Wingman (communauté Counter-Strike 2 et bot Discord).' },
+        en: 'Main projects: REKA (mixing console for Windows, just released), epistudent.fr (a website that calculates a student’s budget) and Flockocord (real-time chat application). Earlier projects, now finished: mush.rip (link-in-bio platform he co-owned) and Wingman (Counter-Strike 2 community and Discord bot).',
+        fr: 'Projets principaux\u00a0: REKA (console de mixage pour Windows, qui vient de sortir), epistudent.fr (un site qui calcule le budget d’un étudiant) et Flockocord (messagerie en temps réel). Projets passés, aujourd’hui terminés\u00a0: mush.rip (plateforme link-in-bio dont il était copropriétaire) et Wingman (communauté Counter-Strike 2 et bot Discord).' },
       { k: ['who', 'qui', 'about', 'present', 'presente', 'yourself', 'julien', 'profil', 'profile', 'age'],
-        en: 'Julien is a web and desktop developer based in Paris, in his first year at Epitech (Programme Grande École). He is building WaveDeck, a virtual audio mixer for Windows, and epistudent.fr, a website that calculates a student’s budget.',
-        fr: 'Julien est développeur web et desktop, basé à Paris, en 1re année à Epitech (Programme Grande École). Il développe WaveDeck, une table de mixage audio virtuelle pour Windows, et epistudent.fr, un site qui calcule le budget d’un étudiant.' },
+        en: 'Julien is a web and desktop developer based in Paris, in his first year at Epitech (Programme Grande École). He has just released REKA, a mixing console for Windows, and is building epistudent.fr, a website that calculates a student’s budget.',
+        fr: 'Julien est développeur web et desktop, basé à Paris, en 1re année à Epitech (Programme Grande École). Il vient de sortir REKA, une console de mixage pour Windows, et développe epistudent.fr, un site qui calcule le budget d’un étudiant.' },
       { k: ['merci', 'thanks', 'thx', 'thank', 'cool', 'nice', 'top', 'super', 'parfait'], en: 'You’re welcome.', fr: 'Avec plaisir.' },
       { g: 1, k: ['salut', 'bonjour', 'hello', 'hi', 'hey', 'yo', 'coucou', 'wesh', 'bonsoir', 'slt'],
         en: 'Hello. You can ask me about Julien’s projects, skills, studies or how to contact him.',
@@ -604,7 +482,7 @@
       en: 'Hello, I’m flockopops, the site’s automated assistant. What would you like to know about Julien?',
       fr: 'Bonjour, je suis flockopops, l’assistant automatisé du site. Que souhaitez-vous savoir sur Julien\u202f?'
     };
-    var CHIPS = { en: ['Projects', 'WaveDeck', 'Skills', 'Contact'], fr: ['Projets', 'WaveDeck', 'Compétences', 'Contact'] };
+    var CHIPS = { en: ['Projects', 'REKA', 'Skills', 'Contact'], fr: ['Projets', 'REKA', 'Compétences', 'Contact'] };
     var BUSY = {
       en: 'Too many questions in a short time. Please wait a few seconds.',
       fr: 'Trop de questions en peu de temps. Merci de patienter quelques secondes.'

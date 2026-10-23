@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-vpwFnruZ0Ph2kdsAgfS2eMYl62Y6UTLTqETLC7OAzMw='; connect-src 'self' https://api.lanyard.rest https://github-contributions-api.jogruber.de https://abacus.jasoncameron.dev; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Julien · Web and desktop developer, Paris</title>
-<meta name="description" content="Julien, web and desktop developer based in Paris. First-year student at Epitech, building WaveDeck, a virtual audio mixer for Windows, and epistudent.fr, a student budget calculator.">
+<meta name="description" content="Julien, web and desktop developer based in Paris. First-year student at Epitech. He has just released REKA, a mixing console for Windows, and builds epistudent.fr, a student budget calculator.">
 <meta name="author" content="Julien">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff">
@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="Julien">
 <meta property="og:url" content="https://regret.info/">
 <meta property="og:title" content="Julien · Web and desktop developer, Paris">
-<meta property="og:description" content="Web and desktop applications. Building WaveDeck, a virtual audio mixer for Windows, and epistudent.fr, a student budget calculator. Epitech Paris.">
+<meta property="og:description" content="Web and desktop applications. Just released: REKA, a mixing console for Windows. Also building epistudent.fr, a student budget calculator. Epitech Paris.">
 <meta property="og:image" content="https://regret.info/assets/img/preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -32,10 +32,10 @@
 <meta property="profile:first_name" content="Julien">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Julien · Web and desktop developer, Paris">
-<meta name="twitter:description" content="Web and desktop applications. Building WaveDeck, a virtual audio mixer for Windows, and epistudent.fr, a student budget calculator. Epitech Paris.">
+<meta name="twitter:description" content="Web and desktop applications. Just released: REKA, a mixing console for Windows. Also building epistudent.fr, a student budget calculator. Epitech Paris.">
 <meta name="twitter:image" content="https://regret.info/assets/img/preview.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Julien","alternateName":"Regret","url":"https://regret.info/","image":"https://regret.info/assets/img/avatar.jpg","jobTitle":"Web and desktop developer","email":"mailto:julien.roullet@proton.me","address":{"@type":"PostalAddress","addressLocality":"Paris","addressCountry":"FR"},"affiliation":{"@type":"CollegeOrUniversity","name":"Epitech Paris","url":"https://www.epitech.eu/"},"knowsAbout":["Python","JavaScript","C","PySide6","Qt","Node.js","Express","React","WebSockets","SQLite","Audio software","VST3"],"sameAs":["https://github.com/regret-py","https://discord.com/users/173290719316934659"]}
+{"@context":"https://schema.org","@type":"Person","name":"Julien","alternateName":"Regret","url":"https://regret.info/","image":"https://regret.info/assets/img/avatar.jpg","jobTitle":"Web and desktop developer","email":"mailto:julien.roullet@proton.me","address":{"@type":"PostalAddress","addressLocality":"Paris","addressCountry":"FR"},"affiliation":{"@type":"CollegeOrUniversity","name":"Epitech Paris","url":"https://www.epitech.eu/"},"knowsAbout":["Python","JavaScript","C","PySide6","Qt","Node.js","Express","React","WebSockets","SQLite","Audio software","Voicemeeter","REAPER","VST3"],"sameAs":["https://github.com/regret-py","https://discord.com/users/173290719316934659"]}
 </script>
 <style>
 /* ---------- fonts ---------- */
@@ -171,17 +171,19 @@ h1 em{padding:0 .16em 0 .1em;margin:0 -.02em;font-style:inherit;color:var(--on-m
 .pill{display:inline-flex;align-items:center;gap:7px;padding:4px 9px;border:1px solid var(--line);font:700 10.5px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text);white-space:nowrap}
 .pill::before{content:"";width:7px;height:7px;background:var(--mark);animation:blink 1.4s steps(1) infinite}
 
-/* WaveDeck */
-.wd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:56px;align-items:start}
-.wd h3{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0 0 18px;font:italic 800 clamp(30px,4vw,48px)/1 var(--logo);letter-spacing:-.02em;text-transform:uppercase}
-.wd-text>p{max-width:36em}
-.wd-text>p+p{margin-top:14px;color:var(--muted)}
+/* REKA: the latest release, with a real screenshot of the console */
+.rk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:start}
+.rk h3{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0 0 18px;font:italic 800 clamp(30px,4vw,48px)/1 var(--logo);letter-spacing:-.02em;text-transform:uppercase}
+.rk-text>p{max-width:36em}
+.rk-text>p+p{margin-top:14px;color:var(--muted)}
 .spec{display:grid;grid-template-columns:max-content minmax(0,1fr);max-width:36em;margin:28px 0 0;border-top:1px solid var(--line);font:400 14px/1.5 var(--sans)}
 .spec dt,.spec dd{padding:9px 0;border-bottom:1px solid var(--rule)}
 .spec dt{padding-right:28px;font:700 11px/1.75 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
-.wd-more{margin-top:24px;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.spec dd{overflow-wrap:anywhere}
+.rk-cta{margin-top:28px}
 .fig figcaption{max-width:44ch;margin-top:12px;font:700 11px/1.5 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);text-wrap:pretty}
-.plate{display:grid;justify-content:center;padding:32px;background:var(--bg-2);border:1px solid var(--line)}
+.plate{padding:24px;background:var(--bg-2);border:1px solid var(--line)}
+.plate img{width:100%;border:1px solid #000}
 /* support: one red button to a Stripe payment page (the amount is set in the Stripe dashboard) */
 .btn--mark{border-color:var(--mark);background:var(--mark);color:var(--on-mark)}
 .btn--mark:hover{border-color:var(--text);background:var(--text);color:var(--bg)}
@@ -189,45 +191,8 @@ h1 em{padding:0 .16em 0 .1em;margin:0 -.02em;font-style:inherit;color:var(--on-m
 .btn--ext:hover::after{transform:translate(3px,-3px)}
 .sup{display:grid;gap:24px;justify-items:start;max-width:36em}
 .sup .btn{min-height:54px;padding:0 26px;font-size:13px}
-.sup-note{font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
-
-/* mixer: a hardware unit, black in both themes (focus rings are white) */
-.mixer{--accent:#fff;--mark:#fff;display:flex;flex-direction:column;gap:13px;padding:14px 16px 15px;background:#0a0a0a;border:1px solid #000;color:#fff;font-family:var(--sans)}
-.mx-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:11px;border-bottom:1px solid rgba(255,255,255,.16)}
-.mx-brand{display:flex;align-items:center;gap:7px;font:700 10px var(--sans);letter-spacing:.14em;color:#d6d6d6}
-.mx-dot{width:7px;height:7px;border-radius:50%;background:#39d353;box-shadow:0 0 6px rgba(57,211,83,.6)}
-.mixer.off .mx-dot{background:#747f8d;box-shadow:none}
-.mx-cfg{font:400 10px var(--sans);letter-spacing:.04em;color:#949494}
-.mx-body{display:flex;align-items:flex-end;gap:12px}
-.strip{display:flex;flex-direction:column;align-items:center;gap:8px;width:46px}
-.knob{position:relative;width:24px;height:24px;border-radius:50%;background:#1b1b1b;border:1px solid rgba(255,255,255,.3);cursor:ns-resize;touch-action:none}
-.knob::after{content:"";position:absolute;left:50%;top:3px;width:2px;height:7px;background:#ff3b3b;transform-origin:50% 9px;transform:translateX(-50%) rotate(var(--rot,0deg))}
-.knob:focus-visible{outline-color:var(--mark)}
-.slabel{font:700 8.5px var(--sans);letter-spacing:.12em;color:#a0a0a0}
-.ms{display:flex;gap:4px}
-.ms button{display:grid;place-items:center;width:21px;height:21px;padding:0;border:1px solid rgba(255,255,255,.22);background:none;color:#a0a0a0;font:700 9px var(--sans);cursor:pointer}
-.ms button:hover{border-color:rgba(255,255,255,.5);color:#e0e0e0}
-.ms .m.on{background:rgba(237,66,69,.2);border-color:#ed4245;color:#ff7376}
-.ms .s.on{background:rgba(230,197,52,.2);border-color:#e6c534;color:#e6c534}
-.fmrow{display:flex;gap:7px;height:118px}
-.fader{position:relative;width:9px;height:100%;background:rgba(255,255,255,.09);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);cursor:ns-resize;touch-action:none;outline:none}
-.fader:focus-visible{box-shadow:0 0 0 2px var(--mark)}
-.ticks{position:absolute;inset:2px 0;background:repeating-linear-gradient(0deg,transparent 0 10px,rgba(255,255,255,.16) 10px 11px)}
-.cap{position:absolute;left:50%;z-index:2;width:23px;height:11px;transform:translateX(-50%);background:#f2f2f2;box-shadow:0 2px 0 rgba(0,0,0,.7);transition:bottom .12s ease-out}
-.cap::after{content:"";position:absolute;left:4px;right:4px;top:50%;height:2px;margin-top:-1px;background:#dc0010}
-.fader.drag .cap{transition:none}
-.meter{position:relative;display:flex;flex-direction:column-reverse;width:8px;height:100%;background:rgba(0,0,0,.5);overflow:hidden}
-.meter i{display:block;width:100%;background:linear-gradient(0deg,#2ea043,#39d353 42%,#e6c534 76%,#ff5a5a);transform:scaleY(var(--g,1));transform-origin:bottom;transition:transform .18s ease-out}
-.meter .grid{position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 8px,rgba(0,0,0,.5) 8px 9px)}
-.clip{position:absolute;top:2px;left:50%;z-index:3;width:4px;height:4px;transform:translateX(-50%);border-radius:50%;background:#3a1416}
-.clip.on{background:#ff4d4d}
-.db{font:400 8.5px var(--sans);color:#a0a0a0;font-variant-numeric:tabular-nums}
-.mx-scale{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;height:100%;padding-left:4px;font:400 8px var(--sans);color:#949494}
-.strip--master{width:64px}
-.strip--master .slabel{color:#fff}
-.strip--master .db{color:#d0d0d0}
-@media (prefers-reduced-motion:no-preference){.anim .meter i{animation:vu var(--vd,1.2s) ease-in-out infinite alternate}}
-@keyframes vu{0%{height:28%}22%{height:74%}44%{height:46%}66%{height:90%}88%{height:56%}100%{height:68%}}
+.sup-note,.rk-note{font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.rk-note{margin-top:14px}
 
 /* projects: product tiles, red / ink / paper */
 .plist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -377,8 +342,8 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   .hero-grid{grid-template-columns:minmax(0,1fr);gap:34px;margin-top:40px}
   .id{flex-direction:row;align-items:center;gap:18px}
   :root{--av:84px}
-  .wd{grid-template-columns:minmax(0,1fr);gap:48px}
-  .fig{justify-self:start;max-width:100%}
+  .rk{grid-template-columns:minmax(0,1fr);gap:48px}
+  .fig{max-width:640px}
   .band-red .sec{padding:60px 0 68px}
   .xp-row{grid-template-columns:minmax(0,1fr)}
 }
@@ -404,18 +369,12 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   .sec{padding-bottom:60px}
   .sec-h{gap:12px;margin-bottom:28px;padding:14px 0 12px}
   .sec-h .n{margin-top:4px}
-  .plate{padding:14px}
+  .plate{padding:12px}
   .gh{padding:16px 14px 14px}
   .photos{grid-template-columns:1fr 1fr;gap:12px}
   .photos figure:first-child{grid-column:1/-1}
   .photos img{height:190px}
   .photos figure:first-child img{height:220px}
-  .mixer{padding:12px 12px 13px}
-  .mx-body{gap:8px}
-  .strip{width:42px}
-  .strip--master{width:52px}
-  .ms{gap:6px}
-  .ms button{width:18px;height:18px}
   .elsewhere .k{width:80px}
   .wordmark{padding-top:48px}
   .foot{margin-top:28px}
@@ -437,7 +396,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   :root,:root[data-theme],.band-red,.band-ink{--bg:#fff;--bg-2:#f2f2f2;--text:#000;--muted:#333;--dim:#555;--rule:#d0d0d0;--line:#000;--accent:#000;--mark:#000;--on-mark:#fff;color-scheme:light}
   @page{margin:14mm 14mm}
   body{font-size:9.5pt;line-height:1.45;background:#fff}
-  .nav,.skip,.fc-fab,.fc-panel,.copy,.fig,.gh,#off,#support,.wd-more,.avail::before,#clock,.totop,.mast,.ticker,.wordmark,.avatar-wrap,.pname .ext{display:none!important}
+  .nav,.skip,.fc-fab,.fc-panel,.copy,.fig,.gh,#off,#support,.rk-cta,.rk-note,.avail::before,#clock,.totop,.mast,.ticker,.wordmark,.avatar-wrap,.pname .ext{display:none!important}
   .band-red,.band-ink{background:none;color:#000}
   .rise{animation:none!important}
   .wrap{max-width:none;padding:0}
@@ -455,8 +414,8 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   .sec-h{display:block;margin:0 0 6pt;padding:6pt 0 0;font-size:13pt;break-after:avoid}
   .sec-h>span{display:inline}
   .sec-h .n{margin:0 6pt 0 0;padding:1pt 4pt;background:none;color:#000;border:1px solid #000;font-size:8pt}
-  .wd{grid-template-columns:1fr}
-  .wd h3{font-size:13pt;margin-bottom:6pt}
+  .rk{grid-template-columns:1fr}
+  .rk h3{font-size:13pt;margin-bottom:6pt}
   .pill{border:0;padding:0}
   .pill::before{display:none}
   .spec{margin-top:8pt;font-size:8.5pt}
@@ -532,7 +491,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
       </div>
 
       <div class="hero-main">
-        <h1 id="h-hero" class="rise" style="--d:2" data-i18n-html="hero_h">I build web and desktop applications. <span class="nw">Right now,</span> a <em>virtual audio mixer</em> for Windows.</h1>
+        <h1 id="h-hero" class="rise" style="--d:2" data-i18n-html="hero_h">I build web and desktop applications. <span class="nw">Just released:</span> <em>REKA</em>, a mixing console for Windows.</h1>
         <p class="intro rise" style="--d:3" data-i18n-html="hero_p">First-year student at <a class="u" href="https://www.epitech.eu/" target="_blank" rel="noopener">Epitech Paris</a>, in the Programme Grande École (PGE). I also build <a class="u" href="https://epistudent.fr" target="_blank" rel="noopener">epistudent.fr</a>, a website that calculates a student’s budget.</p>
 
         <div class="hero-foot rise" style="--d:4">
@@ -548,70 +507,33 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   </section>
 </div>
 
-<!-- decorative strip: two identical halves so the loop is seamless; each half must stay wider than the viewport (7 repeats cover 5K screens) -->
-<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris ×&nbsp;</span><span>WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris × WaveDeck × epistudent.fr × Flockocord × Epitech Paris ×&nbsp;</span></div></div>
+<!-- decorative strip: two identical halves so the loop is seamless; each half must stay wider than the viewport (8 repeats cover 5K screens) -->
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris ×&nbsp;</span><span>REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris × REKA × epistudent.fr × Flockocord × Epitech Paris ×&nbsp;</span></div></div>
 
 <div class="wrap rest">
 
-  <section class="sec" id="wavedeck" aria-labelledby="h-wd">
-    <h2 class="sec-h" id="h-wd"><span class="n">00</span><span data-i18n="now">now</span></h2>
-    <div class="wd">
-      <div class="wd-text">
-        <h3>WaveDeck <span class="pill" data-i18n="wip">in development</span></h3>
-        <p data-i18n="wd_p1">A modular virtual mixing desk for Windows, my own take on Voicemeeter.</p>
-        <p data-i18n="wd_p2">A central audio engine runs on the main device, which acts as the master clock. Channel strips stack on top of it, additional input and output devices are bridged in through ring buffers, and VST3 plugins can be inserted in the signal chain.</p>
+  <section class="sec" id="reka" aria-labelledby="h-rk">
+    <h2 class="sec-h" id="h-rk"><span class="n">00</span><span data-i18n="rk_h">new release</span></h2>
+    <div class="rk">
+      <div class="rk-text">
+        <h3>REKA <span class="pill" data-i18n="rk_out">out now</span></h3>
+        <p data-i18n="rk_p1">One mixing console for Windows. REKA drives Voicemeeter and an effects host, which both run hidden in the background: all you see is the console.</p>
+        <p data-i18n="rk_p2">Faders, mutes, sends, VU meters and a chain of VST effects on every strip, a volume for each application, Intellipan, colour themes and automatic updates. It all ships as a single REKA.exe, tested and built on Windows by GitHub Actions.</p>
         <dl class="spec">
-          <dt data-i18n="sp_platform">platform</dt><dd>Windows</dd>
+          <dt data-i18n="sp_platform">platform</dt><dd>Windows 10 / 11</dd>
           <dt data-i18n="sp_lang">language</dt><dd>Python</dd>
           <dt>interface</dt><dd>PySide6 (Qt)</dd>
-          <dt>audio</dt><dd>sounddevice (PortAudio)</dd>
-          <dt>plugins</dt><dd data-i18n="sp_plugins_v">VST3, hosted with Pedalboard</dd>
-          <dt>code</dt><dd data-i18n="sp_code_v">not public yet</dd>
+          <dt>audio</dt><dd data-i18n="sp_audio_v">Voicemeeter Potato or Banana</dd>
+          <dt data-i18n="sp_fx">effects</dt><dd data-i18n="sp_fx_v">VST through REAPER, FL Studio or Equalizer APO</dd>
+          <dt>code</dt><dd><a class="u" href="https://github.com/regret-py/rekav2" target="_blank" rel="noopener">github.com/regret-py/rekav2</a></dd>
+          <dt data-i18n="sp_credits">credits</dt><dd data-i18n="sp_credits_v">with contributions from Zerka and Fyra</dd>
         </dl>
-        <p class="wd-more"><a class="u" href="mailto:julien.roullet@proton.me?subject=WaveDeck" data-i18n="wd_link">Get in touch about WaveDeck →</a></p>
+        <div class="cta rk-cta"><a class="btn btn--mark btn--ext" href="https://github.com/regret-py/rekav2/releases/tag/build-latest" target="_blank" rel="noopener" data-i18n="rk_dl">Download for Windows</a></div>
+        <p class="rk-note" data-i18n="rk_note">Free, from GitHub. REKA then keeps itself up to date.</p>
       </div>
       <figure class="fig">
-        <div class="plate">
-        <div class="mixer" role="img" aria-label="WaveDeck mixer, mock-up">
-          <div class="mx-head">
-            <span class="mx-brand"><span class="mx-dot"></span><span id="mxState">RUNNING</span></span>
-            <span class="mx-cfg">48 kHz · 128 · ASIO</span>
-          </div>
-          <div class="mx-body">
-            <div class="strip">
-              <div class="slabel">MIC</div><div class="knob" style="--rot:-32deg"></div>
-              <div class="ms"><button type="button" class="m" aria-pressed="false">M</button><button type="button" class="s" aria-pressed="false">S</button></div>
-              <div class="fmrow"><div class="fader"><span class="ticks"></span><span class="cap" style="bottom:60%"></span></div><div class="meter"><span class="grid"></span><span class="clip"></span><i style="height:66%;--vd:1.15s;animation-delay:-.2s"></i></div></div>
-              <div class="db">-6.0</div>
-            </div>
-            <div class="strip">
-              <div class="slabel">SYS</div><div class="knob" style="--rot:12deg"></div>
-              <div class="ms"><button type="button" class="m" aria-pressed="false">M</button><button type="button" class="s" aria-pressed="false">S</button></div>
-              <div class="fmrow"><div class="fader"><span class="ticks"></span><span class="cap" style="bottom:47%"></span></div><div class="meter"><span class="grid"></span><span class="clip"></span><i style="height:52%;--vd:.9s;animation-delay:-.6s"></i></div></div>
-              <div class="db">-12.4</div>
-            </div>
-            <div class="strip">
-              <div class="slabel">GAME</div><div class="knob" style="--rot:-8deg"></div>
-              <div class="ms"><button type="button" class="m" aria-pressed="false">M</button><button type="button" class="s" aria-pressed="false">S</button></div>
-              <div class="fmrow"><div class="fader"><span class="ticks"></span><span class="cap" style="bottom:74%"></span></div><div class="meter"><span class="grid"></span><span class="clip on"></span><i style="height:88%;--vd:1.35s;animation-delay:-.95s"></i></div></div>
-              <div class="db">-1.8</div>
-            </div>
-            <div class="strip">
-              <div class="slabel">MUSIC</div><div class="knob" style="--rot:26deg"></div>
-              <div class="ms"><button type="button" class="m on" aria-pressed="true">M</button><button type="button" class="s" aria-pressed="false">S</button></div>
-              <div class="fmrow"><div class="fader"><span class="ticks"></span><span class="cap" style="bottom:39%"></span></div><div class="meter"><span class="grid"></span><span class="clip"></span><i style="height:34%;--vd:1.05s;animation-delay:-.45s"></i></div></div>
-              <div class="db">-&#8734;</div>
-            </div>
-            <div class="strip strip--master">
-              <div class="slabel">OUT</div><div class="knob" style="--rot:4deg"></div>
-              <div class="ms"><button type="button" class="m" aria-pressed="false">M</button><button type="button" class="s" aria-pressed="false">S</button></div>
-              <div class="fmrow"><div class="fader"><span class="ticks"></span><span class="cap" style="bottom:64%"></span></div><div class="meter"><span class="grid"></span><span class="clip"></span><i style="height:70%;--vd:1.5s;animation-delay:-1.15s"></i></div><div class="mx-scale"><span>0</span><span>-6</span><span>-12</span><span>-24</span><span>-48</span></div></div>
-              <div class="db">-3.2</div>
-            </div>
-          </div>
-        </div>
-        </div>
-        <figcaption data-i18n="wd_fig">fig. 1: playable mock-up. Drag the faders, press M (mute) or S (solo).</figcaption>
+        <div class="plate"><picture><source srcset="assets/img/reka.webp" type="image/webp"><img src="assets/img/reka.jpg" alt="The REKA console: six channel strips, each with its effects, sends, Intellipan, mute button, fader and VU meter, next to the Master panel" data-i18n-alt="img_reka" width="1034" height="860" loading="lazy" decoding="async"></picture></div>
+        <figcaption data-i18n="rk_fig">fig. 1: REKA in demo mode (REKA.exe --demo).</figcaption>
       </figure>
     </div>
   </section>
@@ -667,7 +589,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
     <div>
       <dl class="xp">
         <div class="xp-row"><dt data-i18n="sk_lang">languages</dt><dd>Python, JavaScript, Bash</dd></div>
-        <div class="xp-row"><dt data-i18n="sk_desk">desktop &amp; audio</dt><dd>PySide6 (Qt), sounddevice (PortAudio), Pedalboard, VST3</dd></div>
+        <div class="xp-row"><dt data-i18n="sk_desk">desktop &amp; audio</dt><dd data-i18n="sk_desk_v">PySide6 (Qt), Voicemeeter Remote API, REAPER scripting (Lua), VST, PyInstaller</dd></div>
         <div class="xp-row"><dt data-i18n="sk_front">front end</dt><dd data-i18n="sk_front_v">HTML, CSS, React, technical SEO</dd></div>
         <div class="xp-row"><dt data-i18n="sk_back">back end</dt><dd>Node.js, Express, WebSockets, JWT, SQLite, discord.js</dd></div>
         <div class="xp-row"><dt data-i18n="sk_tools">tools</dt><dd>Git, GitHub, Linux, VS Code</dd></div>
@@ -678,7 +600,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
         <div class="months" id="ghMonths" aria-hidden="true"></div>
         <div class="gh-grid" id="ghGrid" aria-hidden="true"></div>
         <div class="gh-foot">
-          <p class="gh-cap"><b id="ghCount" class="num">98</b> <span data-i18n="gh_sub">contributions over the last 12 months</span><span id="ghRecent"></span> · <a class="u" href="https://github.com/regret-py" target="_blank" rel="noopener">@regret-py</a></p>
+          <p class="gh-cap"><b id="ghCount" class="num">158</b> <span data-i18n="gh_sub">contributions over the last 12 months</span><span id="ghRecent"></span> · <a class="u" href="https://github.com/regret-py" target="_blank" rel="noopener">@regret-py</a></p>
           <p class="gh-legend" aria-hidden="true"><span data-i18n="gh_less">less</span><i></i><i></i><i></i><i></i><i></i><span data-i18n="gh_more">more</span></p>
         </div>
       </div>
@@ -725,7 +647,7 @@ footer{padding:0;font:700 11px/1.5 var(--sans);letter-spacing:.08em;text-transfo
   <section class="sec" id="contact" aria-labelledby="h-ct">
     <h2 class="sec-h" id="h-ct"><span class="n">06</span><span data-i18n="nav_contact">contact</span></h2>
     <div>
-      <p class="lede" data-i18n="ct_p">For an internship, a freelance project or a question about WaveDeck, email is the best way to reach me.</p>
+      <p class="lede" data-i18n="ct_p">For an internship, a freelance project or a question about REKA, email is the best way to reach me.</p>
       <div class="mail">
         <a class="u" href="mailto:julien.roullet@proton.me">julien.roullet@proton.me</a>
         <button class="copy" id="copyEmail" type="button" hidden><span class="idle" data-i18n="copy">copy</span><span class="done" data-i18n="copied">copied</span></button>

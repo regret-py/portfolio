@@ -10,7 +10,7 @@ index.html            page content (English) + all CSS, inlined for a fast first
 404.html              not-found page (follows the saved theme and language)
 assets/js/site.js     behaviour + French translation (one file, commented by section)
 assets/fonts/         Jost Italic (variable, Latin subset), SIL OFL 1.1, see OFL.txt
-assets/img/           photos (WebP + JPEG fallback), avatars, social preview (preview.png, 1200×630)
+assets/img/           photos and the REKA screenshot (WebP + JPEG fallback), avatars, social preview (preview.png, 1200×630)
 api/chat.js           optional Groq proxy for the assistant (Vercel only)
 favicon.svg/.ico, apple-touch-icon.png, robots.txt, sitemap.xml, .well-known/security.txt
 CNAME, .nojekyll      GitHub Pages (custom domain, serve dot-folders as is)
@@ -53,7 +53,10 @@ Streetwear-shop inspired: white, black and one signal red, hard edges, no shadow
 
 - EN / FR (browser language by default, remembered; the French page is never shown in English first).
 - Light / dark theme (follows the OS until the visitor picks one, remembered, no flash).
-- WaveDeck mixer mock-up: faders, pan knobs, mute/solo, keyboard accessible.
+- REKA release: a real screenshot of the console (`assets/img/reka.*`) and a download button to the `build-latest`
+  release of [regret-py/rekav2](https://github.com/regret-py/rekav2), which always holds the latest REKA.exe.
+  To refresh the screenshot, run `python main.py --selftest console.png` in REKA's `reaper_mixer/` folder
+  (it renders the demo mode, `QT_QPA_PLATFORM=offscreen` works on Linux) and convert `console.png`.
 - GitHub contributions graph (live, with a snapshot fallback), Discord status (Lanyard, status only),
   local time in Paris.
 - Assistant "flockopops": scripted answers, or Groq through `api/chat.js` on Vercel. It always states
