@@ -9,9 +9,11 @@ Static HTML, CSS and JavaScript. No framework, no build step.
 index.html            page content (English) + all CSS, inlined for a fast first paint
 404.html              not-found page (follows the saved theme and language)
 assets/js/site.js     behaviour + French translation (one file, commented by section)
+assets/js/stage.js    the hero room: a small WebGL2 path tracer, no dependency (driven by site.js, section 11)
 assets/fonts/         Jost Italic (variable, Latin subset), SIL OFL 1.1, see OFL.txt
 assets/img/           photos and the REKA screenshot (WebP + JPEG fallback), avatars, social preview (preview.png, 1200×630)
 api/chat.js           optional Groq proxy for the assistant (Vercel only)
+tools/stage-poster.html  renders the hero poster again (assets/img/stage.*) after a change to the scene
 favicon.svg/.ico, apple-touch-icon.png, robots.txt, sitemap.xml, .well-known/security.txt
 CNAME, .nojekyll      GitHub Pages (custom domain, serve dot-folders as is)
 vercel.json           HTTP headers if the site is ever deployed on Vercel
@@ -48,11 +50,25 @@ Streetwear-shop inspired: white, black and one signal red, hard edges, no shadow
   whole site; `--accent` is the variant used for red *text* (it is lighter in the dark theme to keep contrast).
 - The contact block (red) and the footer (black) look the same in both themes.
 - The strip under the introduction is decorative (`aria-hidden`) and stops with reduced motion.
+- **The hero is a room rendered live** by a path tracer on the visitor's graphics card (`assets/js/stage.js`).
+  Its ceiling light follows the cursor (a tap on touch screens): every move restarts the render, which settles
+  again within a second or two. The red box is the logo's box; the mirror and glass balls show the light moving.
+  - The scene (room, objects and materials, camera, light) is described at the top of `stage.js` and in its
+    `objects()` shader function. `EXPOSURE` sets the brightness of each theme: the dark theme is the same room
+    with the lights down.
+  - `assets/img/stage.jpg` / `.webp` (1920×800) is the same render, converged, with the light at rest. It shows
+    until the live render has a few samples, and stays when WebGL2 is missing or JavaScript is off.
+    **After any change to the scene, render it again** with `tools/stage-poster.html`, or the live render
+    will jump when it takes over. The two are cropped the same way: `stage.js` reads the poster's
+    `object-position` (centred on desktop, `85% 50%` on small screens, where the room sits above the text).
+  - The render pauses when the hero is off screen or the tab is hidden, stops at 1,024 samples per pixel,
+    and lowers its resolution on a slow graphics card. It is decorative (`aria-hidden`) and hidden in print.
 
 ## Features
 
 - EN / FR (browser language by default, remembered; the French page is never shown in English first).
 - Light / dark theme (follows the OS until the visitor picks one, remembered, no flash).
+- Live path-traced hero: the light follows the cursor (WebGL2, with a still poster as fallback).
 - REKA release: a real screenshot of the console (`assets/img/reka.*`) and a download button to the `build-latest`
   release of [regret-py/rekav2](https://github.com/regret-py/rekav2), which always holds the latest REKA.exe.
   To refresh the screenshot, run `python main.py --selftest console.png` in REKA's `reaper_mixer/` folder
